@@ -6,16 +6,18 @@ from difflib import get_close_matches
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
 
-TOKEN = os.getenv("TOKEN")  # Il token viene preso da Render
+
+TOKEN = os.getenv("TOKEN")  # Il token viene preso da Railway
 
 ADMIN_PASSWORD = "1234"  # Sostituisci con la tua password
 
+# Configura GitHub
+GITHUB_USERNAME = "aboutDani"  # Inserisci il tuo username di GitHub
+GITHUB_REPO = "echobrain"  # Nome del repository dove vuoi salvare db.json
+GIT_TOKEN = os.getenv("GIT_TOKEN")  # Token GitHub salvato su Railway
+
 # Percorso del database JSON
 DB_FILE = "db.json"
-
-# Configurazione di GitHub per il salvataggio automatico
-GITHUB_USERNAME = "aboutDani"  # 🔹 Inserisci il tuo username di GitHub
-GITHUB_REPO = "echobrain"  # 🔹 Inserisci il nome del repository
 
 def load_knowledge_base() -> dict:
     """Carica la knowledge base da un file JSON."""
@@ -33,8 +35,10 @@ def save_knowledge_base(data: dict):
     with open(DB_FILE, 'w', encoding="utf-8") as file:
         json.dump(data, file, indent=2, ensure_ascii=False)
 
-    # Configura il token di GitHub
-    GIT_TOKEN = os.getenv("GIT_TOKEN")  # 🔹 Ottiene il token da Railway
+    push_to_github()  # Aggiorna il file su GitHub
+
+def push_to_github():
+    """Esegue il push di db.json su GitHub automaticamente."""
     if not GIT_TOKEN:
         print("❌ ERRORE: GIT_TOKEN non trovato nelle variabili d'ambiente")
         return
@@ -134,6 +138,8 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
     # Se non trova una risposta, chiede all'utente di insegnargliela con opzione "skip"
     await update.message.reply_text("🤖 Non conosco la risposta. Digita la risposta per insegnarmela o 'skip/q' per uscire.")
+
+    # Salva lo stato della domanda in attesa della risposta dell'utente
     context.user_data["waiting_for_answer"] = user_input
 
 # Carica il database delle domande
