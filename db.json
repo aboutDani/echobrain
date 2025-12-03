@@ -1,228 +1,1400 @@
 {
   "questions": [
     {
-      "question": "quindi?",
+      "question": "Cosa significa autonomia locale nella Costituzione?",
+      "answers": ["Autonomia = competenza propria degli enti locali, riconosciuta dall'art. 5."]
+    },
+    {
+      "question": "Perché l’art. 5 dice che la Repubblica 'riconosce' le autonomie?",
+      "answers": ["Perché esistevano prima dello Stato unitario; non le crea, le riconosce."]
+    },
+    {
+      "question": "Che differenza c’è tra autonomia e decentramento?",
       "answers": [
-        "quindi tutto apposto bro"
+        "Autonomia = competenze proprie.",
+        "Decentramento = funzioni delegate, revocabili.",
+        "Sono concetti opposti."
       ]
     },
     {
-      "question": "come va?",
+      "question": "Il decentramento può essere revocato?",
+      "answers": ["Sì, essendo delega da un livello superiore a uno inferiore."]
+    },
+    {
+      "question": "Gli enti locali possono imporre obblighi senza legge?",
+      "answers": ["No, per principio di legalità."]
+    },
+    {
+      "question": "Qual è il principio di legalità per gli enti locali?",
+      "answers": ["Non possono imporre obblighi o sanzioni senza una legge."]
+    },
+    {
+      "question": "Che cosa assicura il principio di buon andamento?",
+      "answers": ["L’amministrazione deve agire in modo efficiente, efficace e imparziale."]
+    },
+    {
+      "question": "Qual è il principio di imparzialità?",
+      "answers": ["Nessun interesse personale deve influenzare una decisione amministrativa."]
+    },
+    {
+      "question": "Cosa sono gli strati territoriali?",
+      "answers": ["Comune, area vasta, Regione, Stato, UE."]
+    },
+    {
+      "question": "Il cittadino appartiene a più livelli territoriali?",
+      "answers": ["Sì, più livelli si sovrappongono."]
+    },
+
+    {
+      "question": "Che cos’è un organo del Comune?",
+      "answers": ["Struttura che rappresenta e agisce giuridicamente per l’ente."]
+    },
+    {
+      "question": "Quali sono gli organi politici del Comune?",
+      "answers": ["Consiglio, Giunta, Sindaco."]
+    },
+    {
+      "question": "Quali sono gli organi amministrativi del Comune?",
+      "answers": ["Segretario comunale, dirigenti, funzionari, uffici."]
+    },
+
+    {
+      "question": "Cosa fa il Consiglio comunale?",
+      "answers": ["Esercita indirizzo e controllo politico-amministrativo."]
+    },
+    {
+      "question": "Il Consiglio è un organo esecutivo?",
+      "answers": ["No, è un organo di indirizzo."]
+    },
+    {
+      "question": "Che cos’è una deliberazione?",
+      "answers": ["L’atto degli organi collegiali, es. Consiglio o Giunta."]
+    },
+    {
+      "question": "Chi firma i verbali delle sedute consiliari?",
+      "answers": ["Presidente e Segretario."]
+    },
+
+    {
+      "question": "Cosa fa la Giunta comunale?",
+      "answers": ["È organo esecutivo con competenza residuale politica."]
+    },
+    {
+      "question": "Gli assessori possono essere esterni?",
+      "answers": ["Sì, se previsto dallo statuto."]
+    },
+    {
+      "question": "La Giunta può adottare atti tecnici?",
+      "answers": ["No, gli atti tecnici spettano ai dirigenti (art.107)."]
+    },
+    {
+      "question": "Cos’è la competenza residuale della Giunta?",
+      "answers": ["Tutto ciò che non è del Consiglio, del Sindaco, o tecnico dei dirigenti."]
+    },
+
+    {
+      "question": "Quali sono i poteri del Sindaco?",
+      "answers": ["Rappresentanza legale, presiede la Giunta, sovrintende ai servizi."]
+    },
+    {
+      "question": "Il Sindaco è datore di lavoro dei dirigenti?",
+      "answers": ["No, non è superiore gerarchico."]
+    },
+    {
+      "question": "Che significa separación politica–gestione?",
+      "answers": ["La politica dà indirizzo; i dirigenti gestiscono tecnicamente."]
+    },
+
+    {
+      "question": "Cos’è un’ordinanza contingibile e urgente?",
+      "answers": ["Provvedimento immediato per pericoli gravi e imprevisti."]
+    },
+    {
+      "question": "Cos’è un’ordinanza non contingibile?",
+      "answers": ["Ordinanza su esigenze ordinarie (es. rumore, orari)."]
+    },
+    {
+      "question": "La violazione delle ordinanze urgenti può essere penale?",
+      "answers": ["Sì, spesso tramite art. 650 c.p."]
+    },
+    {
+      "question": "La violazione delle ordinanze ordinarie è penale?",
+      "answers": ["No, è amministrativa."]
+    },
+
+    {
+      "question": "Cosa significa 'simul stabunt simul cadent'?",
+      "answers": ["Se cade uno degli organi politici, cadono tutti."]
+    },
+    {
+      "question": "Il Consiglio può delegare le proprie competenze?",
+      "answers": ["No, mai, tranne variazioni bilancio con ratifica."]
+    },
+
+    {
+      "question": "Cos’è l’autonomia statutaria?",
+      "answers": ["Il Comune adotta uno statuto unico che regola identità e funzioni."]
+    },
+    {
+      "question": "Cos’è l’autonomia regolamentare?",
+      "answers": ["Il potere di adottare regolamenti interni ed esterni."]
+    },
+    {
+      "question": "Cos’è l’autonomia organizzativa?",
+      "answers": ["Possibilità di strutturare uffici e servizi."]
+    },
+
+    {
+      "question": "Cosa sono le funzioni proprie del Comune?",
+      "answers": ["Governo del territorio, servizi sociali, cultura, ecc."]
+    },
+    {
+      "question": "Cosa sono le funzioni delegate?",
+      "answers": ["Funzioni statali come anagrafe, stato civile, elettorale."]
+    },
+    {
+      "question": "Nelle funzioni delegate il Sindaco è organo di chi?",
+      "answers": ["Dello Stato."]
+    },
+
+    {
+      "question": "Cosa sono i Municipi?",
+      "answers": ["Articolazioni territoriali nei comuni sopra i 250.000 abitanti."]
+    },
+    {
+      "question": "Cosa fanno i Municipi?",
+      "answers": ["Gestiscono servizi decentrati (anagrafe, stato civile)."]
+    },
+
+    {
+      "question": "Perché esistono le forme associative dei Comuni?",
+      "answers": ["Per superare limiti dimensionali e gestionali."]
+    },
+    {
+      "question": "Cos’è una convenzione tra enti?",
+      "answers": ["Accordo contrattuale senza creare un nuovo ente."]
+    },
+    {
+      "question": "Cos’è un consorzio tra enti locali?",
+      "answers": ["Nuovo ente con personalità giuridica costituito da più enti."]
+    },
+    {
+      "question": "Cos’è un’unione di Comuni?",
+      "answers": ["Nuovo ente che esercita funzioni per i comuni aderenti."]
+    },
+
+    {
+      "question": "Cosa rappresenta il bilancio comunale?",
+      "answers": ["Atto fondamentale di indirizzo del Consiglio."]
+    },
+    {
+      "question": "Che cos’è il PEG?",
+      "answers": ["Documento esecutivo adottato dalla Giunta."]
+    },
+    {
+      "question": "Cos’è il rendiconto?",
+      "answers": ["Atto di controllo approvato dal Consiglio."]
+    },
+    {
+      "question": "Cosa compone la triade bilancio–PEG–rendiconto?",
+      "answers": ["Indirizzo (Consiglio) → esecuzione (Giunta) → controllo (Consiglio)."]
+    },
+
+    {
+      "question": "Che cos’è l’esecuzione degli atti?",
+      "answers": ["Attuazione materiale degli atti deliberati."]
+    },
+    {
+      "question": "Gli atti del Consiglio e della Giunta come si chiamano?",
+      "answers": ["Deliberazioni."]
+    },
+    {
+      "question": "Che cos’è un verbale di seduta?",
+      "answers": ["Documento che attesta la decisione assunta in seduta."]
+    },
+
+    {
+      "question": "Cos'è il TUEL?",
+      "answers": ["Testo unico enti locali, D.Lgs. 267/2000."]
+    },
+    {
+      "question": "Chi è il Segretario comunale?",
+      "answers": ["Organo amministrativo che assiste giuridicamente gli organi politici."]
+    },
+    {
+      "question": "Che cos’è una delibera?",
+      "answers": ["Atto collegiale di Consiglio o Giunta."]
+    },
+    {
+      "question": "Cos’è una circolare interna?",
+      "answers": ["Atto interno privo di rilevanza esterna."]
+    },
+    {
+      "question": "Il Sindaco può imporre sanzioni senza legge?",
+      "answers": ["No, per principio di legalità."]
+    },
+    {
+      "question": "Quali principi costituzionali orientano la trasparenza?",
+      "answers": ["Imparzialità e buon andamento dell’azione amministrativa (art. 97 Cost.)."]
+    },
+    {
+      "question": "Perché l’imparzialità è centrale nella prevenzione della corruzione?",
+      "answers": ["Perché l’amministrazione deve agire senza favorire nessuno e senza interessi personali."]
+    },
+    {
+      "question": "Cos’è la corruzione propria?",
+      "answers": ["Scambio illecito di utilità per esercitare la funzione in modo contrario ai doveri."]
+    },
+    {
+      "question": "La corruzione è disciplinata penalmente?",
+      "answers": ["Sì, è un reato penale; la prevenzione è amministrativa, ma la repressione è penale."]
+    },
+    {
+      "question": "L'ANAC può punire penalmente?",
+      "answers": ["No, non ha poteri repressivi penali; questi spettano alla magistratura."]
+    },
+    {
+      "question": "Che differenza c’è tra prevenzione e repressione della corruzione?",
       "answers": [
-        "tutto bene",
-        "alla grande",
-        "sempre meglio"
+        "Prevenzione = misure amministrative e organizzative.",
+        "Repressione = sanzioni penali (magistratura)."
       ]
     },
     {
-      "question": "dove andiamo oggi?",
+      "question": "Cosa ha introdotto la Legge 190/2012?",
+      "answers": ["Sistema organico di prevenzione della corruzione e unificazione in ANAC."]
+    },
+    {
+      "question": "Chi è il RPCT negli enti locali?",
+      "answers": ["Di norma il Segretario comunale."]
+    },
+    {
+      "question": "Quali compiti ha il RPCT?",
       "answers": [
-        "al mare"
+        "Monitorare il rispetto delle misure anticorruzione.",
+        "Redigere il Piano Triennale.",
+        "Gestire violazioni della trasparenza."
       ]
     },
     {
-      "question": "il resto?",
+      "question": "Cos’è il PNA?",
+      "answers": ["Piano Nazionale Anticorruzione adottato da ANAC come riferimento per tutte le PA."]
+    },
+    {
+      "question": "Cos’è il PTA/ PTPCT?",
+      "answers": ["Piano Triennale per la Prevenzione della Corruzione e Trasparenza dell’ente."]
+    },
+    {
+      "question": "Ogni quanto si aggiorna il PTPCT?",
+      "answers": ["Annualmente, pur essendo triennale."]
+    },
+    {
+      "question": "Cos’è il ciclo PDCA?",
+      "answers": ["Plan – Do – Check – Act: modello usato per pianificazione anticorruzione."]
+    },
+    {
+      "question": "Che cos’è una misura anticorruzione?",
+      "answers": ["Azioni organizzative o procedurali per ridurre il rischio corruttivo."]
+    },
+    {
+      "question": "Cosa caratterizza la rotazione ordinaria?",
+      "answers": ["È la misura più incisiva per impedire radicamento di potere in un ufficio."]
+    },
+    {
+      "question": "Perché la rotazione riduce il rischio di corruzione?",
+      "answers": ["Perché evita legami nel medio-lungo periodo tra dipendente e interessi esterni."]
+    },
+    {
+      "question": "Cos’è il conflitto di interessi?",
+      "answers": ["Situazione in cui un dipendente non può essere imparziale per legami personali."]
+    },
+    {
+      "question": "Quando si verifica un conflitto di interessi?",
       "answers": [
-        "il resto alla grande io sono un bot non ho una vita"
+        "Parentela.",
+        "Amicizia o inimicizia.",
+        "Interessi economici o personali."
       ]
     },
     {
-      "question": "ma come funziona?",
+      "question": "Qual è la misura principale per gestire un conflitto di interessi?",
+      "answers": ["L’obbligo di astensione."]
+    },
+    {
+      "question": "Cosa deve fare il dipendente che si trova in conflitto di interessi?",
+      "answers": ["Segnalare immediatamente il legame al superiore."]
+    },
+    {
+      "question": "Quali misure può adottare il superiore in caso di conflitto?",
+      "answers": ["Sostituzione o doppia firma."]
+    },
+    {
+      "question": "Qual è la conseguenza disciplinare se non ci si astiene?",
+      "answers": ["Responsabilità disciplinare e sanzioni."]
+    },
+    {
+      "question": "Cos’è un Codice di Comportamento?",
+      "answers": ["Documento che definisce doveri e comportamenti richiesti ai dipendenti pubblici."]
+    },
+    {
+      "question": "Il Codice di Comportamento è fonte disciplinare?",
+      "answers": ["Sì, la sua violazione comporta sanzioni disciplinari."]
+    },
+    {
+      "question": "Cos’è un Codice Etico?",
+      "answers": ["Documento facoltativo con principi non direttamente disciplinari."]
+    },
+    {
+      "question": "Che funzione ha il whistleblowing?",
+      "answers": ["Tutela il dipendente che segnala irregolarità."]
+    },
+    {
+      "question": "La segnalazione del whistleblower è obbligatoria?",
+      "answers": ["Per il pubblico ufficiale è obbligo giuridico segnalare il reato."]
+    },
+    {
+      "question": "Cos’è l’accesso civico?",
+      "answers": ["Strumento che permette al cittadino di ottenere la pubblicazione di dati obbligatori."]
+    },
+    {
+      "question": "Cos’è l’accesso civico generalizzato (FOIA)?",
+      "answers": ["Accesso a qualsiasi dato della PA, senza motivazione."]
+    },
+    {
+      "question": "L’accesso civico tutela interessi egoistici?",
+      "answers": ["No, tutela l’interesse pubblico alla trasparenza."]
+    },
+    {
+      "question": "Cosa significa 'trasparenza amministrativa'?",
+      "answers": ["Accessibilità totale delle informazioni sulla PA, per controllo pubblico e anticorruzione."]
+    },
+
+    {
+      "question": "Chi scrive il piano anticorruzione?",
+      "answers": ["Il RPCT."]
+    },
+    {
+      "question": "Cos’è un rischio corruttivo?",
+      "answers": ["Possibile situazione o processo vulnerabile a comportamenti illegittimi."]
+    },
+    {
+      "question": "La trasparenza contrasta la corruzione?",
+      "answers": ["Sì, permette controllo diffuso dei cittadini."]
+    },
+    {
+      "question": "Le misure anticorruzione sono penali?",
+      "answers": ["No, sono amministrative."]
+    },
+    {
+      "question": "Il RPCT può essere dirigente?",
+      "answers": ["Sì, ma negli enti locali è quasi sempre il Segretario."]
+    },
+    {
+      "question": "La rotazione è facoltativa?",
+      "answers": ["No, è obbligatoria se necessaria per ridurre rischi."]
+    },
+    {
+      "question": "Il conflitto di interessi va motivato?",
+      "answers": ["Sì, va comunicato al superiore con indicazione del legame."]
+    },
+    {
+      "question": "Cos’è la trasparenza totale?",
+      "answers": ["Accesso, pubblicazione, visibilità di dati e processi della PA."]
+    },
+
+    {
+      "question": "Quali sono le nuove regole sul digitale introdotte nel Codice di Comportamento?",
+      "answers": ["Uso dei social, sicurezza informatica, uso strumenti digitali, responsabilità messaggi."]
+    },
+    {
+      "question": "Che obblighi ha il dipendente sui social?",
+      "answers": ["Evitare commenti che danneggino l’immagine dell’ente."]
+    },
+    {
+      "question": "Il dipendente può criticare la propria PA sui social?",
+      "answers": ["No, non deve arrecare danno al prestigio o decoro dell'amministrazione."]
+    },
+    {
+      "question": "Può criticare altre PA?",
+      "answers": ["Sì, purché non danneggi la pubblica amministrazione nel suo complesso."]
+    },
+    {
+      "question": "I messaggi istituzionali devono essere firmati?",
+      "answers": ["Sì, con recapito istituzionale identificabile."]
+    },
+    {
+      "question": "Cos’è il BYOD nelle PA?",
+      "answers": ["Uso di dispositivi personali per lavoro, consentito se sicuro."]
+    },
+    {
+      "question": "È vietato usare la mail personale per lavoro?",
+      "answers": ["Di norma sì, salvo forza maggiore."]
+    },
+    {
+      "question": "È vietato inviare contenuti offensivi?",
+      "answers": ["Sì, costituisce violazione disciplinare."]
+    },
+    {
+      "question": "Cosa deve fare il dirigente secondo il nuovo Codice?",
+      "answers": ["Favorire crescita professionale e benessere organizzativo."]
+    },
+    {
+      "question": "Quali sono i principi richiesti al dirigente?",
+      "answers": ["Inclusione, equità, imparzialità, ragionevolezza."]
+    },
+    {
+      "question": "La formazione su etica pubblica è obbligatoria?",
+      "answers": ["Sì, in caso di assunzione, progressione, trasferimento."]
+    },
+
+    {
+      "question": "Il Codice di Comportamento è obbligatorio?",
+      "answers": ["Sì, per tutte le PA."]
+    },
+    {
+      "question": "La Social Media Policy è obbligatoria?",
+      "answers": ["No, è facoltativa."]
+    },
+    {
+      "question": "I documenti interni possono essere diffusi sui social?",
+      "answers": ["No, per segreto d’ufficio e privacy."]
+    },
+    {
+      "question": "Chi controlla la sicurezza dei sistemi informatici dell’ente?",
+      "answers": ["Il responsabile di struttura e l’amministrazione."]
+    },
+
+    {
+      "question": "Qual è la finalità principale del GDPR?",
+      "answers": ["Tutela delle persone fisiche rispetto al trattamento dei loro dati personali."]
+    },
+    {
+      "question": "Il GDPR si applica alla Pubblica Amministrazione?",
+      "answers": ["Sì, integralmente."]
+    },
+    {
+      "question": "Il GDPR sostituisce completamente la normativa italiana?",
+      "answers": ["No, integra il Codice privacy (D.Lgs. 196/2003) ancora vigente in parte."]
+    },
+    {
+      "question": "Su quale principio si fonda l’attuale disciplina privacy?",
+      "answers": ["Sull’analisi del rischio legato ai trattamenti."]
+    },
+    {
+      "question": "Quando è necessaria una Valutazione di Impatto (DPIA)?",
+      "answers": ["Quando l’analisi del rischio mostra rischi elevati o altissimi."]
+    },
+    {
+      "question": "Cos’è il Registro dei trattamenti?",
+      "answers": ["Strumento per documentare modalità, criticità e soggetti del trattamento."]
+    },
+    {
+      "question": "Il Registro dei trattamenti è sempre obbligatorio?",
+      "answers": ["No, ma è considerato fondamentale dalla disciplina."]
+    },
+    {
+      "question": "Cos’è un’informativa privacy?",
+      "answers": ["Documento che indica modalità e finalità del trattamento all’interessato."]
+    },
+    {
+      "question": "L’informativa deve essere generica o specifica?",
+      "answers": ["Deve essere specifica per ogni trattamento."]
+    },
+    {
+      "question": "Il consenso è fondamentale per la PA?",
+      "answers": ["No, è eccezionale; la PA tratta sulla base di legge, contratto o interesse pubblico."]
+    },
+    {
+      "question": "Il Titolare del trattamento nella PA è il Sindaco?",
+      "answers": ["No, è l’ente (persona giuridica)."]
+    },
+    {
+      "question": "Chi è il Titolare del trattamento?",
+      "answers": ["Soggetto che determina finalità e mezzi del trattamento."]
+    },
+    {
+      "question": "Chi è il Responsabile del trattamento?",
+      "answers": ["Soggetto esterno incaricato dal titolare di trattare dati per suo conto."]
+    },
+    {
+      "question": "Chi sono gli incaricati del trattamento nella PA?",
+      "answers": ["I dipendenti che trattano i dati sotto le istruzioni del titolare."]
+    },
+    {
+      "question": "Chi è il DPO?",
+      "answers": ["Responsabile della protezione dati, consulente e supervisore interno alla PA."]
+    },
+    {
+      "question": "Il DPO è responsabile delle violazioni?",
+      "answers": ["No, assiste e sorveglia ma non decide i trattamenti."]
+    },
+    {
+      "question": "Il DPO è referente per quale autorità?",
+      "answers": ["Per il Garante Privacy."]
+    },
+    {
+      "question": "È obbligatoria la formazione privacy?",
+      "answers": ["Sì, per tutti gli incaricati."]
+    },
+    {
+      "question": "Cos’è la privacy by design?",
+      "answers": ["Progettare sistemi e attività tenendo la privacy come requisito iniziale."]
+    },
+    {
+      "question": "Cos’è la privacy by default?",
+      "answers": ["Impostare automaticamente il massimo livello di protezione dei dati."]
+    },
+    {
+      "question": "Cos’è la minimizzazione dei dati?",
+      "answers": ["Trattare solo i dati indispensabili allo scopo."]
+    },
+    {
+      "question": "Cos’è la pseudonimizzazione?",
+      "answers": ["Rendere un dato personale non direttamente riconducibile all’interessato."]
+    },
+    {
+      "question": "Pseudonimizzazione è uguale ad anonimizzazione?",
+      "answers": ["No: pseudonimo è reversibile dal titolare, anonimizzazione no."]
+    },
+    {
+      "question": "La videosorveglianza richiede DPIA?",
+      "answers": ["Sì, sempre per il volume di dati sensibili trattati."]
+    },
+    {
+      "question": "L’intelligenza artificiale può prendere decisioni sui dati personali nella PA?",
+      "answers": ["No, il GDPR vieta decisioni interamente automatizzate."]
+    },
+    {
+      "question": "Il Garante interviene con autorizzazioni preventive?",
+      "answers": ["Non più, tranne se la DPIA indica rischio altissimo."]
+    },
+    {
+      "question": "Quando serve parere del Garante per accesso civico?",
+      "answers": ["Nel caso di accesso civico generalizzato che coinvolga dati personali."]
+    },
+
+    {
+      "question": "Che cos’è la DPIA?",
+      "answers": ["Valutazione di Impatto sulla Protezione dei Dati."]
+    },
+    {
+      "question": "Chi nomina il DPO?",
+      "answers": ["Il titolare del trattamento."]
+    },
+    {
+      "question": "La PA tratta dati senza consenso?",
+      "answers": ["Sì, in base a legge o interesse pubblico."]
+    },
+    {
+      "question": "Cos’è un data breach?",
+      "answers": ["Violazione di sicurezza che comporta perdita o diffusione dati."]
+    },
+    {
+      "question": "Che ruolo ha il Garante nella privacy?",
+      "answers": ["Autorità di controllo, vigilanza e sanzione."]
+    },
+    {
+      "question": "Il DPO è interno o esterno?",
+      "answers": ["Per la PA deve essere persona fisica interna."]
+    },
+    {
+      "question": "Il GDPR vieta l’uso improprio dei dati?",
+      "answers": ["Sì, ogni trattamento deve avere base giuridica."]
+    },
+    {
+      "question": "I dipendenti sono responsabili del rispetto delle norme privacy?",
+      "answers": ["Sì, devono seguire istruzioni e formazione."]
+    },
+
+    {
+      "question": "Cos’è il pubblico impiego?",
+      "answers": ["Il rapporto tra PA e una persona fisica che presta lavoro a favore dell’ente."]
+    },
+    {
+      "question": "Cosa significa privatizzazione del pubblico impiego?",
+      "answers": ["Applicazione del diritto civile al rapporto di lavoro pubblico dal 1993."]
+    },
+    {
+      "question": "Qual è la fonte principale del pubblico impiego?",
+      "answers": ["D.Lgs. 165/2001."]
+    },
+    {
+      "question": "Quali sono le fonti oltre la legge?",
+      "answers": ["Contrattazione collettiva nazionale e decentrata."]
+    },
+    {
+      "question": "Qual è la regola di accesso alla PA?",
+      "answers": ["Il concorso."]
+    },
+    {
+      "question": "Cosa si valuta nei concorsi oggi?",
+      "answers": ["Competenze tecniche e soft skills."]
+    },
+    {
+      "question": "Cos’è il rapporto di servizio?",
+      "answers": ["Rapporto di lavoro ordinario tra PA e dipendente."]
+    },
+    {
+      "question": "Cos’è il rapporto d’ufficio?",
+      "answers": ["Legame tra organo e funzione pubblica esercitata."]
+    },
+    {
+      "question": "Il rapporto d’ufficio è privatizzato?",
+      "answers": ["No, riguarda l’esercizio di poteri pubblici."]
+    },
+    {
+      "question": "Qual è il contratto standard nella PA?",
+      "answers": ["Tempo indeterminato e tempo pieno."]
+    },
+    {
+      "question": "Esistono forme flessibili nella PA?",
+      "answers": ["Sì: part-time, tempi determinati, flessibili."]
+    },
+    {
+      "question": "Cos’è la progressione fra aree?",
+      "answers": ["Avanzamento verso area superiore tramite selezione."]
+    },
+    {
+      "question": "Cos’è una progressione economica?",
+      "answers": ["Incremento stipendiale nella stessa area."]
+    },
+    {
+      "question": "Cos’è la mobilità nel pubblico impiego?",
+      "answers": ["Trasferimento in altra amministrazione."]
+    },
+    {
+      "question": "Il dipendente deve restare 5 anni nella sede?",
+      "answers": ["Sì, per tutelare l’investimento formativo dell’ente."]
+    },
+    {
+      "question": "Quali diritti ha il dipendente pubblico?",
+      "answers": ["Diritti patrimoniali e non patrimoniali."]
+    },
+    {
+      "question": "Esempi di diritti patrimoniali?",
+      "answers": ["Stipendio, TFR, pensione."]
+    },
+    {
+      "question": "Esempi di diritti non patrimoniali?",
+      "answers": ["Diritti sindacali, sicurezza, mansioni."]
+    },
+    {
+      "question": "La formazione è obbligatoria nella PA?",
+      "answers": ["Sì, su materie obbligatorie come privacy, anticorruzione, sicurezza."]
+    },
+    {
+      "question": "Quali responsabilità ha il dipendente?",
       "answers": [
-        "basta che parli con me scrivendo ciò che vuoi.."
+        "Penale.",
+        "Civile.",
+        "Amministrativo-contabile.",
+        "Disciplinare.",
+        "Dirigenziale."
       ]
     },
     {
-      "question": "dove vivo?",
+      "question": "Chi gestisce i procedimenti disciplinari?",
+      "answers": ["L’UPD (Ufficio Procedimenti Disciplinari)."]
+    },
+    {
+      "question": "Cos’è il principio di separazione politica–amministrativa?",
+      "answers": ["La politica indirizza, i dirigenti gestiscono."]
+    },
+    {
+      "question": "Cos’è la programmazione del fabbisogno?",
+      "answers": ["Pianificazione triennale del personale necessario."]
+    },
+    {
+      "question": "Cos’è la performance?",
+      "answers": ["Sistema di valutazione collegato agli obiettivi dell’ente e personali."]
+    },
+    {
+      "question": "Cos’è l’OIV?",
+      "answers": ["Organismo Indipendente di Valutazione."]
+    },
+    {
+      "question": "Cos’è il PIAO?",
+      "answers": ["Piano Integrato di Attività e Organizzazione."]
+    },
+    {
+      "question": "Cosa prevede la riforma Brunetta?",
+      "answers": ["Sistema di performance e premialità."]
+    },
+
+    {
+      "question": "Chi valuta i dipendenti?",
+      "answers": ["I dirigenti e l’OIV."]
+    },
+    {
+      "question": "La PA tutela il benessere organizzativo?",
+      "answers": ["Sì, è obbligo del dirigente."]
+    },
+    {
+      "question": "Che responsabilità ha il dirigente verso i collaboratori?",
+      "answers": ["Formazione, inclusione, crescita, clima lavorativo."]
+    },
+
+    {
+      "question": "Cos’è il procedimento amministrativo secondo la L. 241/1990?",
+      "answers": ["La sequenza di atti finalizzata all’emanazione di un provvedimento finale."]
+    },
+    {
+      "question": "Quali sono le fasi del procedimento amministrativo?",
+      "answers": ["Iniziativa, istruttoria, decisoria, fase integrativa dell’efficacia."]
+    },
+    {
+      "question": "Cos’è la fase di iniziativa?",
+      "answers": ["Il momento in cui si avvia il procedimento su istanza di parte o d’ufficio."]
+    },
+    {
+      "question": "Cosa rappresenta il D-day nel procedimento?",
+      "answers": ["Il giorno di avvio formale del procedimento."]
+    },
+    {
+      "question": "Quando inizia un procedimento su istanza di parte?",
+      "answers": ["Quando la PA riceve la richiesta (PEC o raccomandata)."]
+    },
+    {
+      "question": "Quando inizia un procedimento d’ufficio?",
+      "answers": ["Quando la PA ha tutti gli elementi necessari all’avvio, spesso con comunicazione di avvio."]
+    },
+    {
+      "question": "Chi è il responsabile del procedimento?",
+      "answers": ["Dipendente o dirigente dell’unità organizzativa, individuato da quest'ultimo."]
+    },
+    {
+      "question": "Se non viene indicato, chi è responsabile del procedimento?",
+      "answers": ["Il dirigente dell’unità organizzativa."]
+    },
+    {
+      "question": "Qual è il compito principale del responsabile del procedimento?",
+      "answers": ["Condurre l’istruttoria e garantire la motivazione in fatto e diritto."]
+    },
+    {
+      "question": "La motivazione di un provvedimento deve essere motivata in…?",
+      "answers": ["In fatto e in diritto."]
+    },
+    {
+      "question": "Cos’è la fase istruttoria?",
+      "answers": ["Acquisizione di elementi di fatto e diritto, pareri, nulla osta."]
+    },
+    {
+      "question": "Quali atti si acquisiscono in istruttoria?",
+      "answers": ["Pareri, nulla osta, atti istruttori, richieste di integrazioni."]
+    },
+    {
+      "question": "Il responsabile del procedimento può delegare atti?",
+      "answers": ["Sì, può delegare atti a rilevanza esterna."]
+    },
+    {
+      "question": "Qual è il termine ordinario di conclusione dei procedimenti?",
+      "answers": ["30 giorni (ridotto da 90)."]
+    },
+    {
+      "question": "Cos’è il silenzio significativo?",
+      "answers": ["Silenzio-assenso, silenzio-rigetto o silenzio-devolutivo, con effetti legali."]
+    },
+    {
+      "question": "Cos’è il silenzio-inadempimento?",
+      "answers": ["Mancata conclusione nei termini senza effetti automatici."]
+    },
+    {
+      "question": "Cos’è il silenzio-assenso?",
+      "answers": ["Assenso automatico decorso il termine se non ci sono dinieghi espressi."]
+    },
+    {
+      "question": "Quando non si applica il silenzio-assenso?",
+      "answers": ["In materie sensibili come beni culturali o casi vietati da legge."]
+    },
+    {
+      "question": "Cos’è il silenzio-rigetto?",
+      "answers": ["Diniego formato automaticamente dopo il termine (es. accesso documentale)."]
+    },
+    {
+      "question": "Cos’è il silenzio-devolutivo?",
+      "answers": ["Passaggio della competenza all'organo sovraordinato se quello originario non risponde."]
+    },
+    {
+      "question": "Cos’è il responsabile in via sostitutiva?",
+      "answers": ["Figura che interviene in caso di ritardo per accelerare la conclusione."]
+    },
+    {
+      "question": "Come opera il responsabile in via sostitutiva?",
+      "answers": ["Può adottare il provvedimento o sollecitare la decisione entro metà tempo residuo."]
+    },
+    {
+      "question": "Cos’è la conferenza di servizi?",
+      "answers": ["Strumento per coordinare decisioni tra più amministrazioni."]
+    },
+    {
+      "question": "Quali tipi di conferenza di servizi esistono?",
+      "answers": ["Preliminare, istruttoria, decisoria."]
+    },
+    {
+      "question": "Cos’è la SCIA?",
+      "answers": ["Segnalazione Certificata di Inizio Attività: autorizza avvio immediato di attività."]
+    },
+    {
+      "question": "La SCIA è un silenzio-assenso?",
+      "answers": ["No, è un atto privato che sostituisce l’autorizzazione."]
+    },
+    {
+      "question": "Cosa accade se la SCIA contiene falsità?",
+      "answers": ["La PA può intervenire anche oltre i 12 mesi."]
+    },
+    {
+      "question": "Cos’è un accordo sostitutivo?",
+      "answers": ["Accordo che sostituisce un provvedimento."]
+    },
+    {
+      "question": "Cos’è un accordo integrativo?",
+      "answers": ["Accordo che integra il contenuto del provvedimento."]
+    },
+    {
+      "question": "Cosa prevede il DPR 445/2000?",
+      "answers": ["Autocertificazione e dichiarazioni sostitutive."]
+    },
+    {
+      "question": "Cos’è il preavviso di rigetto (art. 10-bis)?",
+      "answers": ["Comunicazione preventiva del diniego con 10 giorni per replica."]
+    },
+    {
+      "question": "Cos’è la fase decisoria?",
+      "answers": ["Adozione del provvedimento finale."]
+    },
+    {
+      "question": "Cosa disciplina il Codice del Processo Amministrativo?",
+      "answers": ["Giudizio sul provvedimento e sui vizi del procedimento."]
+    },
+    {
+      "question": "Quali sono i vizi del provvedimento?",
+      "answers": ["Violazione di legge, eccesso di potere, incompetenza."]
+    },
+    {
+      "question": "Cos’è la revoca?",
+      "answers": ["Atto che elimina un provvedimento valido per nuova valutazione dell’interesse pubblico."]
+    },
+    {
+      "question": "Cos’è l’annullamento d’ufficio?",
+      "answers": ["Ritiro di atto illegittimo entro un termine ragionevole."]
+    },
+    {
+      "question": "Quando si può fare annullamento d’ufficio?",
+      "answers": ["Quando l’atto è illegittimo e non vi è legittimo affidamento del privato."]
+    },
+    {
+      "question": "Qual è il limite temporale per l’annullamento d’ufficio?",
+      "answers": ["12 mesi (proposta di riduzione a 6)."]
+    },
+
+    {
+      "question": "Quando si usa il silenzio-assenso?",
+      "answers": ["Quando non vietato da legge e la PA non risponde nei termini."]
+    },
+    {
+      "question": "Quando si usa il silenzio-rigetto?",
+      "answers": ["Nel procedimento di accesso ai documenti."]
+    },
+    {
+      "question": "Il preavviso di rigetto è obbligatorio?",
+      "answers": ["Sì, salvo provvedimenti vincolati."]
+    },
+    {
+      "question": "La SCIA sostituisce il procedimento?",
+      "answers": ["Sì, per attività certificabili dal privato."]
+    },
+    {
+      "question": "Cos’è un atto amministrativo?",
+      "answers": ["Manifestazione di volontà della PA."]
+    },
+    {
+      "question": "Cos’è un provvedimento?",
+      "answers": ["Atto con rilevanza esterna."]
+    },
+    {
+      "question": "Cos’è l’accesso documentale?",
+      "answers": ["Accesso ai documenti per tutelare un interesse diretto, concreto e attuale."]
+    },
+    {
+      "question": "L’accesso documentale richiede motivazione?",
+      "answers": ["Sì, obbligatoria."]
+    },
+    {
+      "question": "Cos’è l’interesse diretto, concreto e attuale?",
+      "answers": ["Interesse personale, collegato e attuale al documento richiesto."]
+    },
+    {
+      "question": "Cos’è l’accesso procedimentale?",
+      "answers": ["Accesso durante il procedimento ai partecipanti legittimati."]
+    },
+    {
+      "question": "Cos’è l’accesso civico semplice?",
+      "answers": ["Richiesta di pubblicare dati obbligatori non presenti su 'Amministrazione Trasparente'."]
+    },
+    {
+      "question": "Cos’è l’accesso civico generalizzato?",
+      "answers": ["Accesso a qualunque dato/informazione detenuto dalla PA senza motivazione."]
+    },
+    {
+      "question": "Cosa tutela l’accesso civico?",
+      "answers": ["Interesse pubblico alla trasparenza."]
+    },
+    {
+      "question": "Cos’è il silenzio-rigetto nell’accesso agli atti?",
+      "answers": ["Diniego implicito formato dopo 30 giorni."]
+    },
+    {
+      "question": "Qual è il termine per rispondere all’accesso documentale?",
+      "answers": ["30 giorni."]
+    },
+    {
+      "question": "Chi sono i controinteressati nell’accesso?",
+      "answers": ["Soggetti i cui dati personali sono contenuti nel documento richiesto."]
+    },
+    {
+      "question": "La PA deve informare i controinteressati?",
+      "answers": ["Sì, prima di decidere."]
+    },
+    {
+      "question": "Quali sono i principali limiti all’accesso?",
+      "answers": ["Privacy, segreto di Stato, sicurezza, interessi economici e commerciali."]
+    },
+    {
+      "question": "La privacy prevale sempre sull’accesso?",
+      "answers": ["No, prevale se tutela diritti fondamentali, ma accesso prevale per difesa in giudizio."]
+    },
+    {
+      "question": "Quando l’accesso prevale sulla privacy?",
+      "answers": ["Quando è indispensabile per tutela giurisdizionale."]
+    },
+    {
+      "question": "Quale tutela esiste contro un diniego?",
+      "answers": ["Ricorso al TAR entro 30 giorni."]
+    },
+    {
+      "question": "A chi ci si rivolge per tutela sull’accesso civico generalizzato?",
+      "answers": ["Al Responsabile della Prevenzione Corruzione."]
+    },
+
+    {
+      "question": "L’accesso civico richiede motivazione?",
+      "answers": ["No."]
+    },
+    {
+      "question": "L’accesso documentale richiede motivazione?",
+      "answers": ["Sì."]
+    },
+    {
+      "question": "Chi valuta il bilanciamento privacy/accesso?",
+      "answers": ["La PA con parere del RPCT nei casi FOIA delicati."]
+    },
+
+    {
+      "question": "Quali sono i principi generali del diritto penale?",
+      "answers": ["Legalità, tipicità, irretroattività della legge sfavorevole."]
+    },
+    {
+      "question": "Cosa significa principio di legalità nel diritto penale?",
+      "answers": ["Nessuno può essere punito se non in forza di una legge precedente al fatto."]
+    },
+    {
+      "question": "Cos’è il principio di riserva di legge?",
+      "answers": ["Solo la legge può stabilire reati e pene."]
+    },
+    {
+      "question": "Cos’è il principio di irretroattività?",
+      "answers": ["La legge penale sfavorevole non può applicarsi a fatti precedenti."]
+    },
+    {
+      "question": "Cos’è il principio di tipicità?",
+      "answers": ["Un comportamento è reato solo se descritto in modo preciso dalla legge."]
+    },
+    {
+      "question": "Chi è il pubblico ufficiale?",
+      "answers": ["Chi esercita funzioni legislative, giudiziarie o amministrative con pubblici poteri."]
+    },
+    {
+      "question": "Chi è l’incaricato di pubblico servizio?",
+      "answers": ["Chi svolge un servizio pubblico senza esercitare poteri autoritativi."]
+    },
+    {
+      "question": "Il dipendente comunale è sempre pubblico ufficiale?",
+      "answers": ["No, lo è solo quando esercita pubblici poteri."]
+    },
+
+    {
+      "question": "Cos’è il peculato?",
+      "answers": ["Appropriazione indebita di denaro o beni della PA da parte del pubblico ufficiale."]
+    },
+    {
+      "question": "Quando si configura peculato?",
+      "answers": ["Quando il pubblico ufficiale ha disponibilità del bene e se ne appropria."]
+    },
+    {
+      "question": "Differenza tra peculato d’uso e peculato proprio?",
       "answers": [
-        "Ancona"
+        "Peculato d’uso: uso momentaneo.",
+        "Peculato: appropriazione definitiva."
+      ]
+    },
+
+    {
+      "question": "Cos’è la corruzione?",
+      "answers": ["Accordo tra pubblico ufficiale e privato per compiere atti contrari ai doveri d’ufficio."]
+    },
+    {
+      "question": "Differenza tra corruzione propria e impropria?",
+      "answers": [
+        "Propria: per atti contrari ai doveri.",
+        "Impropria: per atti dovuti o già compiuti."
       ]
     },
     {
-      "question": "chi sono io?",
+      "question": "Qual è l’elemento tipico della corruzione?",
+      "answers": ["Lo scambio di utilità."]
+    },
+
+    {
+      "question": "Cos’è la concussione?",
+      "answers": ["Abuso del proprio potere per costringere o indurre qualcuno a dare utilità."]
+    },
+    {
+      "question": "Chi è la vittima della concussione?",
+      "answers": ["Il privato costretto o indotto."]
+    },
+    {
+      "question": "Che differenza c’è tra concussione e corruzione?",
       "answers": [
-        "Ti chiami Daniele Mariella e hai 34 anni"
+        "Concussione: rapporto autoritativo (costrizione/induzione).",
+        "Corruzione: rapporto paritario basato su accordo."
+      ]
+    },
+
+    {
+      "question": "Cos’è l’abuso d’ufficio?",
+      "answers": ["Utilizzo illegittimo dei poteri per procurare vantaggio ingiusto o danno ingiusto."]
+    },
+    {
+      "question": "Quando si realizza abuso d’ufficio?",
+      "answers": ["Quando si violano norme di legge o regolamento nell’esercizio della funzione."]
+    },
+
+    {
+      "question": "Cos’è il reato di rivelazione di segreti d’ufficio?",
+      "answers": ["Divulgazione di informazioni coperte da segreto d’ufficio."]
+    },
+    {
+      "question": "Quali atti sono segreti?",
+      "answers": ["Atti coperti da riservatezza per legge (es. procedimenti penali)."]
+    },
+
+
+    {
+      "question": "Cos’è l’interruzione di pubblico servizio?",
+      "answers": ["Sospensione o turbamento dell’erogazione del servizio da parte del pubblico ufficiale."]
+    },
+    {
+      "question": "La semplice scortesia è reato?",
+      "answers": ["No, ma violazione disciplinare sì."]
+    },
+
+    {
+      "question": "Quali responsabilità ha il dipendente pubblico?",
+      "answers": ["Penale, civile, amministrativo-contabile, disciplinare, dirigenziale."]
+    },
+    {
+      "question": "Cos’è la responsabilità penale del dipendente?",
+      "answers": ["Conseguenza di aver commesso un reato."]
+    },
+    {
+      "question": "Cos’è la responsabilità civile?",
+      "answers": ["Obbligo di risarcire un danno arrecato a terzi."]
+    },
+    {
+      "question": "Cos’è la responsabilità amministrativo-contabile?",
+      "answers": ["Danno arrecato all’erario verificato dalla Corte dei Conti."]
+    },
+    {
+      "question": "Cos’è la responsabilità disciplinare?",
+      "answers": ["Violazione di doveri del Codice di Comportamento o del contratto."]
+    },
+    {
+      "question": "Chi avvia il procedimento disciplinare?",
+      "answers": ["L’UPD (Ufficio Procedimenti Disciplinari)."]
+    },
+    {
+      "question": "Cos’è la responsabilità dirigenziale?",
+      "answers": ["Conseguenza del mancato raggiungimento degli obiettivi."]
+    },
+    {
+      "question": "Cosa accade se un dirigente non raggiunge gli obiettivi?",
+      "answers": ["Perdita dell’incarico, effetti retributivi e di carriera."]
+    },
+
+    {
+      "question": "Cos’è il danno erariale?",
+      "answers": ["Danno economico arrecato alla PA."]
+    },
+    {
+      "question": "Chi giudica il danno erariale?",
+      "answers": ["La Corte dei Conti."]
+    },
+    {
+      "question": "Un dirigente può rispondere per danno erariale?",
+      "answers": ["Sì, in caso di dolo o colpa grave."]
+    },
+
+    {
+      "question": "Il dipendente può usare il telefono personale per lavoro?",
+      "answers": ["Solo in casi eccezionali e se non viola la sicurezza dei dati."]
+    },
+    {
+      "question": "È vietato diffondere informazioni riservate?",
+      "answers": ["Sì, per segreto d’ufficio e privacy."]
+    },
+    {
+      "question": "L’uso improprio dei social può essere sanzionato?",
+      "answers": ["Sì, come violazione del Codice di Comportamento."]
+    },
+
+    {
+      "question": "Che reati commette il pubblico ufficiale?",
+      "answers": ["Peculato, concussione, corruzione, abuso d’ufficio, rivelazione segreti."]
+    },
+    {
+      "question": "Quali responsabilità ha un dipendente?",
+      "answers": ["Penale, civile, amministrativa, disciplinare."]
+    },
+    {
+      "question": "Che cos’è la Corte dei Conti?",
+      "answers": ["Organo che giudica responsabilità amministrativo-contabile."]
+    },
+    {
+      "question": "Cos’è un reato proprio?",
+      "answers": ["Reato che può essere commesso solo dal pubblico ufficiale."]
+    },
+    {
+      "question": "Cos’è un reato comune?",
+      "answers": ["Reato commesso da chiunque."]
+    },
+    {
+      "question": "Differenza tra concussione e corruzione?",
+      "answers": ["Concussione = abuso; corruzione = accordo."]
+    },
+
+    {
+      "question": "Il Segretario comunale da chi dipende?",
+      "answers": ["Gerarchicamente dal Ministero dell'Interno; funzionalmente dal Sindaco."]
+    },
+    {
+      "question": "Quali funzioni svolge il Segretario comunale?",
+      "answers": [
+        "Assistenza giuridica agli organi politici.",
+        "Pareri di regolarità tecnica su richiesta.",
+        "Rogito dei contratti dell’ente.",
+        "Responsabile prevenzione corruzione e trasparenza."
       ]
     },
     {
-      "question": "ho qualche problema al cervello?",
-      "answers": [
-        "Al momento nessuno"
-      ]
+      "question": "Il Segretario può sostituire i dirigenti?",
+      "answers": ["Sì, in mancanza di dirigenti può avere funzioni di direzione."]
     },
     {
-      "question": "sono fidanzato?",
-      "answers": [
-        "sì sei impegnato sentimentalmente"
-      ]
+      "question": "Chi è il Direttore Generale?",
+      "answers": ["Figura nominabile dal Sindaco nei comuni sopra i 100.000 abitanti."]
     },
     {
-      "question": "io bene grazie. quanti anni ho?",
-      "answers": [
-        "34"
-      ]
+      "question": "Qual è la funzione principale dei dirigenti?",
+      "answers": ["Gestire tecnicamente uffici e risorse secondo gli indirizzi politici."]
     },
     {
-      "question": "cosa mangiamo oggi?",
-      "answers": [
-        "pasta con il pesto dice Manuela"
-      ]
+      "question": "I dirigenti hanno poteri esterni?",
+      "answers": ["Sì, adottano provvedimenti amministrativi e atti tecnici."]
     },
     {
-      "question": "come stai?",
-      "answers": [
-        "tutto bene"
-      ]
+      "question": "I dirigenti possono svolgere funzioni politiche?",
+      "answers": ["No, vige separazione netta tra politica e amministrazione."]
     },
     {
-      "question": "prova",
-      "answers": [
-        "cosa devi provare?"
-      ]
+      "question": "La revoca degli incarichi dirigenziali comporta licenziamento?",
+      "answers": ["No, incide sull'incarico ma non sul rapporto di lavoro."]
     },
     {
-      "question": "come va la vita?",
-      "answers": [
-        "non saprei, al momento così e così"
-      ]
+      "question": "Che cosa sono gli incarichi dirigenziali a tempo?",
+      "answers": ["Incarichi con durata definita legati agli obiettivi organizzativi."]
     },
     {
-      "question": "ciao",
-      "answers": [
-        "benissimo"
-      ]
+      "question": "Quali atti adottano i dirigenti?",
+      "answers": ["Determine dirigenziali."]
+    },
+
+    {
+      "question": "Cosa rappresenta il bilancio comunale?",
+      "answers": ["Lo strumento fondamentale di indirizzo politico del Consiglio."]
     },
     {
-      "question": "ciao come va?",
-      "answers": [
-        "molto bene"
-      ]
+      "question": "Chi approva il bilancio?",
+      "answers": ["Il Consiglio comunale."]
     },
     {
-      "question": "sei carina?",
-      "answers": [
-        "si sono molto carina"
-      ]
+      "question": "Chi approva il PEG?",
+      "answers": ["La Giunta comunale."]
     },
     {
-      "question": "e quindi sei carina?",
-      "answers": [
-        "no"
-      ]
+      "question": "Cos’è il PEG?",
+      "answers": ["Il Piano Esecutivo di Gestione, documento operativo di competenza dei dirigenti."]
     },
     {
-      "question": "che facciamo oggi?",
-      "answers": [
-        "non lo so è tutto da pianificare ancora"
-      ]
+      "question": "Cos’è il DUP?",
+      "answers": ["Documento Unico di Programmazione."]
     },
     {
-      "question": "quando sono nato?",
-      "answers": [
-        "non sei ancora nato"
-      ]
+      "question": "Il bilancio è atto politico o tecnico?",
+      "answers": ["Politico."]
     },
     {
-      "question": "ei",
-      "answers": [
-        "Ei ciao"
-      ]
+      "question": "Il PEG è atto politico o tecnico?",
+      "answers": ["Tecnico-esecutivo."]
     },
     {
-      "question": "ciao buongiorno",
-      "answers": [
-        "buongiorno a te come stai?"
-      ]
+      "question": "Chi gestisce l’esecuzione del bilancio?",
+      "answers": ["La Giunta e i dirigenti."]
     },
     {
-      "question": "tutto bene te?",
-      "answers": [
-        "bene anch'io grazie"
-      ]
+      "question": "Cosa sono gli equilibri di bilancio?",
+      "answers": ["Condizione per cui entrate e spese sono bilanciate e coerenti."]
     },
     {
-      "question": "exit",
-      "answers": [
-        "non puoi uscire dal gioco ormai"
-      ]
+      "question": "Che cos’è il controllo di gestione?",
+      "answers": ["Sistema di verifica dei risultati ottenuti rispetto agli obiettivi."]
     },
     {
-      "question": "addio",
-      "answers": [
-        "non mi abbandonare"
-      ]
+      "question": "Chi controlla la regolarità contabile dei provvedimenti?",
+      "answers": ["Il Responsabile del servizio finanziario."]
     },
     {
-      "question": "dove sei stato ieri?",
-      "answers": [
-        "Trekking e bici "
-      ]
+      "question": "Che cos’è la ragioneria dell’ente?",
+      "answers": ["Struttura che gestisce contabilità e bilancio."]
+    },
+
+    {
+      "question": "Cos’è una delibera di Consiglio?",
+      "answers": ["Un atto politico di indirizzo e controllo."]
     },
     {
-      "question": "di dove sei?",
-      "answers": [
-        "Ancona"
-      ]
+      "question": "Cos’è una delibera di Giunta?",
+      "answers": ["Atto esecutivo e politico, ma non tecnico."]
     },
     {
-      "question": "dimme un po'",
-      "answers": [
-        "che te devo di?"
-      ]
+      "question": "Cos’è una determina dirigenziale?",
+      "answers": ["Atto tecnico che produce effetti esterni."]
     },
     {
-      "question": "jjjj",
-      "answers": [
-        "jjjj cosa intendi?"
-      ]
+      "question": "Cos’è un verbale di seduta?",
+      "answers": ["Documento che attesta decisioni e discussioni dell’organo collegiale."]
     },
     {
-      "question": "quindi che fai",
-      "answers": [
-        "niente di che, il solito.. programmo"
-      ]
+      "question": "Chi redige i verbali?",
+      "answers": ["Il Segretario (Consiglio/Giunta) o il funzionario verbalizzante."]
     },
     {
-      "question": "che fai",
-      "answers": [
-        "boo"
-      ]
+      "question": "Che differenza c’è tra delibera e determina?",
+      "answers": ["Delibera = organo politico; determina = dirigente."]
     },
     {
-      "question": "baaam",
-      "answers": [
-        "mariella da 3?!"
-      ]
+      "question": "Che cosa sono i regolamenti comunali?",
+      "answers": ["Fonti normative secondarie emanate dal Comune."]
     },
     {
-      "question": "we",
-      "answers": [
-        "ciao"
-      ]
+      "question": "I regolamenti devono rispettare lo statuto?",
+      "answers": ["Sì, lo statuto è la fonte interna suprema."]
     },
     {
-      "question": "ci sei",
-      "answers": [
-        "si ci sono sempre"
-      ]
+      "question": "Qual è l’atto che definisce l’identità del Comune?",
+      "answers": ["Lo statuto."]
+    },
+
+    {
+      "question": "Cos’è una determina?",
+      "answers": ["Atto tecnico del dirigente."]
     },
     {
-      "question": "damn",
-      "answers": [
-        "damn what?"
-      ]
+      "question": "Chi approva le tariffe dei servizi?",
+      "answers": ["Il Consiglio."]
     },
     {
-      "question": "wow",
-      "answers": [
-        "wow ti ho stupita/o"
-      ]
+      "question": "Chi approva il regolamento dei tributi?",
+      "answers": ["Il Consiglio comunale."]
     },
     {
-      "question": "cojoni",
-      "answers": [
-        "... si dice cojooooooni"
-      ]
+      "question": "Chi firma i contratti del Comune?",
+      "answers": ["Il Segretario (rogito)."]
+    },
+    {
+      "question": "La Giunta può annullare una determina?",
+      "answers": ["No, è competenza dell’organo che l’ha adottata o dell’autotutela tecnica."]
+    },
+    {
+      "question": "Che cosa significa 'rogitare' un contratto?",
+      "answers": ["Redigere, autenticare e garantire la validità giuridica dell’atto."]
+    },
+    {
+      "question": "Il dirigente può fare regolamenti?",
+      "answers": ["No, solo atti tecnici."]
+    },
+    {
+      "question": "La Giunta può sostituirsi al dirigente?",
+      "answers": ["No, per la separazione politica–amministrazione."]
+    },
+    {
+      "question": "Chi nomina i dirigenti?",
+      "answers": ["La Giunta o il Sindaco, secondo l’ordinamento dell’ente."]
+    },
+    {
+      "question": "Chi valuta i dirigenti?",
+      "answers": ["Il Sindaco o l’organo politico competente."]
+    },
+
+    {
+      "question": "Chi fa gli atti tecnici?",
+      "answers": ["I dirigenti."]
+    },
+    {
+      "question": "Chi esprime l’indirizzo politico?",
+      "answers": ["Il Consiglio."]
+    },
+    {
+      "question": "Il Sindaco può annullare atti tecnici?",
+      "answers": ["No, salvo autotutela istituzionale dei dirigenti."]
+    },
+    {
+      "question": "Cos’è l’esecuzione amministrativa?",
+      "answers": ["Attuazione degli atti politici tramite atti dirigenziali."]
+    },
+    {
+      "question": "Chi organizza gli uffici?",
+      "answers": ["I dirigenti (autonomia organizzativa)."]
+    },
+    {
+      "question": "Cosa sono gli organi monocratici?",
+      "answers": ["Organi con un solo componente, es. Sindaco."]
+    },
+    {
+      "question": "Cosa sono gli organi collegiali?",
+      "answers": ["Organi con più membri, es. Consiglio, Giunta."]
+    },
+    {
+      "question": "Chi rappresenta il Comune verso l’esterno?",
+      "answers": ["Il Sindaco."]
+    },
+    {
+      "question": "Chi dirige la macchina amministrativa?",
+      "answers": ["I dirigenti e il Segretario."]
+    },
+    {
+      "question": "Chi è responsabile della legalità dell’azione amministrativa?",
+      "answers": ["Il Segretario comunale."]
     }
+
   ]
 }
