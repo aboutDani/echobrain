@@ -113,35 +113,33 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
     # Se l'utente ha già fatto una domanda, sta rispondendo con l'apprendimento
     if "waiting_for_answer" in context.user_data:
-        user_question = context.user_data["waiting_for_answer"]
-        user_answer = user_input
+    user_question = context.user_data["waiting_for_answer"]
+    user_answer = user_input_raw  # testo originale
 
-        if user_answer.lower() in ("skip", "q"):
-            await update.message.reply_text("⏭️ Nessuna risposta salvata. Proseguiamo!")
-            del context.user_data["waiting_for_answer"]
-            return
-
-        # Aggiunge la nuova risposta nel database
-        for q in knowledge_base["questions"]:
-            if q["question"].lower() == user_question.lower():
-                q["answers"].append(user_answer)
-                break
-        else:
-            # Se la domanda non esiste, la crea con la nuova risposta
-            knowledge_base["questions"].append(
-                {"question": user_question, "answers": [user_answer]}
-            )
-
-        save_knowledge_base(knowledge_base)  # Salva le nuove informazioni
-
-        await update.message.reply_text(
-            f"✅ Grazie! Ho memorizzato la risposta:\n\n*{user_question} ➝ {user_answer}*",
-            parse_mode="Markdown",
-        )
-
-        # Rimuove lo stato di attesa
+    if user_answer.lower() in ("skip", "q"):
+        await update.message.reply_text("⏭️ Nessuna risposta salvata. Proseguiamo!")
         del context.user_data["waiting_for_answer"]
         return
+
+    # Aggiunge la nuova risposta nel database
+    for q in knowledge_base["questions"]:
+        if q["question"].lower() == user_question.lower():
+            q["answers"].append(user_answer)
+            break
+    else:
+        knowledge_base["questions"].append(
+            {"question": user_question, "answers": [user_answer]}
+        )
+
+    save_knowledge_base(knowledge_base)
+
+    await update.message.reply_text(
+        f"✅ Grazie! Ho memorizzato la risposta:\n\n*{user_question} ➝ {user_answer}*",
+        parse_mode="Markdown",
+    )
+
+    del context.user_data["waiting_for_answer"]
+    return
 
     # Se la domanda esiste già, risponde
     best_match = find_best_match(
@@ -186,3 +184,4 @@ if __name__ == "__main__":
     # Avvia il bot
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
