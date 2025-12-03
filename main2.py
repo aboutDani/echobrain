@@ -15,6 +15,9 @@ GITHUB_USERNAME = "aboutDani"
 GITHUB_REPO = "echobrain"
 GIT_TOKEN = os.getenv("GIT_TOKEN")
 
+# per il backup
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "1234")  # meglio da env, ma ha default
+
 # Percorso del database JSON
 DB_FILE = "db.json"
 
@@ -108,7 +111,19 @@ async def list_questions(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text(message, parse_mode="Markdown")
 
 async def backup(update: Update, context: CallbackContext) -> None:
-    """Invia il file db.json reale usato dal bot."""
+    """Invia il file db.json reale usato dal bot, protetto da password."""
+    # Controllo password: /backup <password>
+    if not context.args:
+        await update.message.reply_text("🔐 Usa: /backup <password>")
+        return
+
+    supplied_password = context.args[0]
+
+    if supplied_password != ADMIN_PASSWORD:
+        await update.message.reply_text("⛔ Password errata.")
+        return
+
+    # Ok, password corretta → invio il file
     if not os.path.exists(DB_FILE):
         await update.message.reply_text("⚠️ Nessun database trovato.")
         return
@@ -199,4 +214,5 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
