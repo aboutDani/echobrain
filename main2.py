@@ -142,19 +142,21 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     # Salva lo stato della domanda in attesa della risposta dell'utente
     context.user_data["waiting_for_answer"] = user_input
 
-# Carica il database delle domande
-knowledge_base = load_knowledge_base()
+if __name__ == "__main__":
+    # Carica il database delle domande
+    knowledge_base = load_knowledge_base()
 
-# Configura il bot con Application (sostituisce Updater)
-app = Application.builder().token(TOKEN).build()
+    # Configura il bot con Application (sostituisce Updater)
+    app = Application.builder().token(TOKEN).build()
 
-# Comandi
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("help", help_command))
-app.add_handler(CommandHandler("list", list_questions))
+    # Comandi
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("help", help_command))
+    app.add_handler(CommandHandler("list", list_questions))
 
-# Messaggi
-app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    # Messaggi
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-# Avvia il bot
-app.run_polling()
+    # Avvia il bot
+    app.run_polling()
+
