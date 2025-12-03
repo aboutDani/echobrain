@@ -89,6 +89,7 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "📜 *Comandi disponibili:*\n"
         "/help - Mostra questo messaggio 📖\n"
         "/list - Mostra tutte le domande e risposte 📋\n"
+        "/backup - Fai il backup del json \n"
         "👉 Scrivi una domanda e io proverò a rispondere!"
     )
     await update.message.reply_text(help_text, parse_mode="Markdown")
@@ -106,6 +107,17 @@ async def list_questions(update: Update, context: CallbackContext) -> None:
 
     await update.message.reply_text(message, parse_mode="Markdown")
 
+async def backup(update: Update, context: CallbackContext) -> None:
+    """Invia il file db.json reale usato dal bot."""
+    if not os.path.exists(DB_FILE):
+        await update.message.reply_text("⚠️ Nessun database trovato.")
+        return
+    
+    await update.message.reply_document(
+        document=open(DB_FILE, "rb"),
+        filename="db.json",
+        caption="📦 Backup del database attuale"
+    )
 
 async def handle_message(update: Update, context: CallbackContext) -> None:
     """Risponde ai messaggi e apprende nuove risposte se necessario."""
@@ -122,7 +134,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
         # Skip o annulla
         if user_answer.lower() in ("skip", "q"):
-            await update.message.reply_text("⏭️ Nessuna risposta salvata. Proseguiamo!")
+            await update.message.reply_text("⏭️ Proseguiamo!")
             del context.user_data["waiting_for_answer"]
             return
 
@@ -160,7 +172,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
     # Non trovata → chiedi risposta
     await update.message.reply_text(
-        "🤖 Non conosco la risposta. Digita la risposta per insegnarmela o 'skip/q' per uscire."
+        "🤖 Non conosco la risposta. Digita la risposta per insegnarmela poi 'skip/q' per uscire."
     )
 
     context.user_data["waiting_for_answer"] = user_input_raw
@@ -180,9 +192,11 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("list", list_questions))
+    app.add_handler(CommandHandler("backup", backup))
 
     # Messaggi normali
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
