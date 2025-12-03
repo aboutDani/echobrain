@@ -1,7 +1,6 @@
 import json
 import os
 import random
-import subprocess
 from difflib import get_close_matches
 
 from telegram import Update
@@ -9,11 +8,6 @@ from telegram.ext import Application, CommandHandler, MessageHandler, CallbackCo
 
 # Token del bot (da variabile d'ambiente)
 TOKEN = os.getenv("TOKEN")
-
-# Configura GitHub
-GITHUB_USERNAME = "aboutDani"
-GITHUB_REPO = "echobrain"
-GIT_TOKEN = os.getenv("GIT_TOKEN")
 
 # per il backup
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "1234")  # meglio da env, ma ha default
@@ -33,39 +27,10 @@ def load_knowledge_base() -> dict:
     except (json.JSONDecodeError, FileNotFoundError):
         return {"questions": []}
 
-
 def save_knowledge_base(data: dict):
-    """Salva la knowledge base in un file JSON e lo pusha su GitHub."""
+    """Salva la knowledge base nel file JSON locale."""
     with open(DB_FILE, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=2, ensure_ascii=False)
-
-    push_to_github()  # Aggiorna il file su GitHub
-
-
-def push_to_github():
-    """Esegue il push di db.json su GitHub automaticamente."""
-    if not GIT_TOKEN:
-        print("⚠️ GIT_TOKEN non trovato, salto il push su GitHub")
-        return
-
-    repo_url = f"https://{GITHUB_USERNAME}:{GIT_TOKEN}@github.com/{GITHUB_USERNAME}/{GITHUB_REPO}.git"
-
-    try:
-        subprocess.run(["git", "config", "--global", "user.email", "bot@example.com"], check=True)
-        subprocess.run(["git", "config", "--global", "user.name", "Bot Auto Commit"], check=True)
-        subprocess.run(["git", "remote", "set-url", "origin", repo_url], check=True)
-        subprocess.run(["git", "add", "db.json"], check=True)
-
-        commit = subprocess.run(["git", "commit", "-m", "Auto update db.json"], capture_output=True, text=True)
-        if "nothing to commit" in commit.stdout.lower():
-            print("ℹ️ Nessuna modifica da salvare su GitHub")
-            return
-
-        subprocess.run(["git", "push", "origin", "main"], check=True)
-        print("✅ Database aggiornato su GitHub con successo!")
-    except subprocess.CalledProcessError as e:
-        print("❌ ERRORE nel push su GitHub:", e)
-
 
 def find_best_match(user_question: str, questions: list) -> str | None:
     """Trova la domanda più simile tra quelle disponibili."""
@@ -92,7 +57,7 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "📜 *Comandi disponibili:*\n"
         "/help - Mostra questo messaggio 📖\n"
         "/list - Mostra tutte le domande e risposte 📋\n"
-        "/backup - Fai il backup del json \n"
+        "/backup <password> - Fai il backup del json 🔐\n"
         "👉 Scrivi una domanda e io proverò a rispondere!"
     )
     await update.message.reply_text(help_text, parse_mode="Markdown")
@@ -214,5 +179,6 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
