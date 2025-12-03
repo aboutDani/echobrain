@@ -32,9 +32,50 @@ def save_knowledge_base(data: dict):
     with open(DB_FILE, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=2, ensure_ascii=False)
 
-def find_best_match(user_question: str, questions: list) -> str | None:
-    """Trova la domanda più simile tra quelle disponibili."""
-    matches = get_close_matches(user_question, questions, n=1, cutoff=0.6)
+def find_best_match(user_question: str, knowledge_base: dict) -> str | None:
+    """
+    Trova la domanda migliore:
+    1) per parola chiave nella domanda,
+    2) poi nelle risposte,
+    3) poi fuzzy match,
+    usando uno score.
+    """
+
+    user = user_question.lower().strip()
+
+    best_q = None
+    best_score = 0
+
+    # 1) Scoring manuale su tutte le domande
+    for q in knowledge_base["questions"]:
+        q_text = q["question"].lower()
+        answers = [a.lower() for a in q.get("answers", [])]
+
+        score = 0
+
+        # parola chiave nel testo della domanda
+        if user in q_text:
+            score += 5
+
+        # parola chiave nelle risposte
+        if any(user in a for a in answers):
+            score += 3
+
+        # preferisci domande corte per definizioni (es. "Cos'è il TUEL?")
+        score -= len(q_text) / 200.0  # penalità piccola per le domande molto lunghe
+
+        # se questa domanda ha punteggio migliore, tienila
+        if score > best_score:
+            best_score = score
+            best_q = q["question"]
+
+    # Se abbiamo trovato qualcosa con score > 0, usiamo quello
+    if best_q and best_score > 0:
+        return best_q
+
+    # 2) Se proprio nulla, usiamo fuzzy match sul testo delle domande
+    questions_texts = [q["question"] for q in knowledge_base["questions"]]
+    matches = get_close_matches(user_question, questions_texts, n=1, cutoff=0.4)
     return matches[0] if matches else None
 
 
@@ -139,9 +180,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         return
 
     # --- DOMANDA NORMALE ---
-    best_match = find_best_match(
-        user_input, [q["question"] for q in knowledge_base["questions"]]
-    )
+    best_match = find_best_match(user_input, knowledge_base)
 
     if best_match:
         answers = get_answer_for_question(best_match, knowledge_base)
@@ -179,6 +218,7 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
