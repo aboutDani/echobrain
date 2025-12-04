@@ -327,6 +327,78 @@
         "Approfondimento: L’abuso d’ufficio colpisce l’uso distorto del potere amministrativo. Richiede un comportamento in violazione di norme di legge o di regolamento (o il mancato rispetto dell’obbligo di astensione in conflitto di interessi) e l’intenzione di procurare a sé o ad altri un vantaggio patrimoniale ingiusto o di arrecare ad altri un danno ingiusto. È stato oggetto di più riforme, volte a limitare l’ambito di responsabilità per evitare che il timore di incorrere nel reato paralizzi l’attività amministrativa. Rimane, tuttavia, un presidio fondamentale contro favoritismi e discriminazioni arbitrarie nell’esercizio di funzioni pubbliche.",
         "Collegamenti: conflitto di interessi, Codice di comportamento, annullamento d’ufficio degli atti illegittimi, responsabilità disciplinare e contabile."
       ]
+    },
+    {
+      "question": "Ordinamento giuridico, amministrativo e contabile degli Enti Locali",
+      "answers": [
+        "Sintesi: Il D.Lgs. 267/2000 (TUEL) raccoglie in un unico testo le norme sull'ordinamento istituzionale e contabile degli enti locali italiani (Comuni, Province, Città metropolitane, unioni).",
+        "Approfondimento: Il TUEL disciplina la struttura e i principi dell’ordinamento degli enti locali: definisce organi, competenze, funzioni, organizzazione, servizi e controllo. Inoltre regola l’ordinamento finanziario e contabile dell’ente: programmazione, bilanci, gestione, investimenti, revisione economico-finanziaria e controllo contabile. L’obiettivo è garantire un’organizzazione efficiente, trasparente e conforme ai principi costituzionali di buon andamento e imparzialità.",
+        "Collegamenti: TUEL struttura interna ed enti locali; bilancio e contabilità pubblica; principi costituzionali di autonomia locale." 
+      ]
+    },
+    {
+      "question": "Normativa in materia di Anticorruzione e Trasparenza",
+      "answers": [
+        "Sintesi: La L. 190/2012 (legge Severino) e il D.Lgs. 33/2013 sono i due principali testi in materia di prevenzione della corruzione e trasparenza nella PA.",
+        "Approfondimento: La L. 190/2012 stabilisce principi e strumenti per prevenire e reprimere la corruzione nelle pubbliche amministrazioni. I principali elementi sono la creazione del Piano Nazionale Anticorruzione (PNA), l’istituzione del Responsabile per la Prevenzione della Corruzione e Trasparenza (RPCT) e l’obbligo per gli enti di adottare Piani triennali di prevenzione della corruzione e trasparenza. Il D.Lgs. 33/2013 integra la disciplina con obblighi di pubblicità e trasparenza degli atti amministrativi e la sezione “Amministrazione trasparente” nei siti istituzionali per favorire l’accesso civico alle informazioni.",
+        "Collegamenti: ANAC; PNA e PTPCT; trasparenza amministrativa; accesso civico e FOIA." 
+      ]
+    },
+    {
+      "question": "Riservatezza dei dati personali (GDPR 679/2016 e D.Lgs. 101/2018)",
+      "answers": [
+        "Sintesi: Il GDPR (Regolamento UE 2016/679) è la disciplina europea che tutela i dati personali delle persone fisiche; in Italia è stato integrato dal D.Lgs. 101/2018.",
+        "Approfondimento: Il GDPR definisce i principi fondamentali del trattamento dei dati personali (liceità, trasparenza, minimizzazione, limitazione delle finalità, integrità e riservatezza) e disciplina i diritti degli interessati (accesso, rettifica, cancellazione, opposizione). Introduce anche il principio di responsabilizzazione (accountability) e obblighi di protezione by design e by default. Il D.Lgs. 101/2018 ha adeguato la precedente normativa italiana al GDPR, armonizzando le disposizioni interne e includendo figure chiave come il DPO (Data Protection Officer). Il regolamento si applica a tutte le organizzazioni che trattano dati delle persone nell’UE.",
+        "Collegamenti: diritti degli interessati; ruolo di titolare e responsabile del trattamento; ruolo del DPO; principi di accountability e privacy by design." 
+      ]
+    },
+    {
+      "question": "Norme generali sull’ordinamento del lavoro alle dipendenze delle amministrazioni pubbliche",
+      "answers": [
+        "Sintesi: Il D.Lgs. 165/2001 è il testo base che disciplina il rapporto di lavoro dei dipendenti pubblici in Italia.",
+        "Approfondimento: Il D.Lgs. 165/2001 ha riformato profondamente il pubblico impiego, introducendo regole di diritto privato nei rapporti di lavoro nella PA, pur mantenendo alcune specificità pubblicistiche come l’accesso tramite concorso e doveri di imparzialità. Il decreto regola l’organizzazione del lavoro, diritti e doveri dei dipendenti pubblici, disciplina la contrattazione collettiva, la mobilità, l’inquadramento, l’orario, la retribuzione e la responsabilità. L’obiettivo è di armonizzare il lavoro pubblico con principi di efficienza, responsabilizzazione e trasparenza.",
+        "Collegamenti: pubblico impiego privatizzato; responsabilità disciplinare; contrattazione collettiva." 
+      ]
+    },
+    {
+      "question": "Codice di comportamento dei dipendenti pubblici",
+      "answers": [
+        "Sintesi: Il DPR n. 62/2013 disciplina il Codice di comportamento dei dipendenti pubblici, traducendo principi costituzionali e normativi in obblighi di condotta.",
+        "Approfondimento: Il codice stabilisce regole di disciplina, onore, imparzialità e correttezza che il dipendente pubblico deve osservare nello svolgimento delle proprie funzioni. È ispirato ai principi costituzionali (articoli 97, 98 e 54 della Costituzione) e a disposizioni della Legge 190/2012. Il codice specifica i doveri nei rapporti con il pubblico, l’astensione in caso di conflitto di interessi, il divieto di accettare regali non simbolici e la partecipazione ad associazioni che possano creare conflitto. La violazione comporta responsabilità disciplinare.",
+        "Collegamenti: Legge 190/2012; responsabilità disciplinare della PA." 
+      ]
+    },
+    {
+      "question": "Norme sul Procedimento amministrativo",
+      "answers": [
+        "Sintesi: La Legge 241/1990 regola il procedimento amministrativo in Italia, definendo principi, fasi e garanzie per i cittadini.",
+        "Approfondimento: La L. 241/1990 fissa i principi generali che devono ispirare l’attività amministrativa: imparzialità, buona amministrazione, partecipazione, trasparenza, economicità, tempestività. Disciplina l’avvio, l’istruttoria, la decisione e la conclusione dei procedimenti amministrativi, e introduce strumenti come la comunicazione di avvio, il termine per la conclusione, la motivazione degli atti e la responsabilità del responsabile del procedimento. L’obiettivo è assicurare garanzie procedurali e controlli sull’azione della PA.",
+        "Collegamenti: trasparenza; accesso agli atti; diritti dei cittadini nei procedimenti amministrativi." 
+      ]
+    },
+    {
+      "question": "Accesso agli atti, accesso civico semplice e generalizzato",
+      "answers": [
+        "Sintesi: Il D.Lgs. 33/2013 e la L. 241/1990 riconoscono vari strumenti di accesso ai documenti amministrativi.",
+        "Approfondimento: L’accesso agli atti secondo la L. 241/1990 tutela chi ha un interesse giuridico concreto, garantendo la visione e copia di documenti amministrativi. Il D.Lgs. 33/2013 istituisce l’accesso civico semplice (richiesta di atti soggetti ad obblighi di pubblicazione) e l’accesso civico generalizzato (FOIA), che permette a chiunque di chiedere informazioni anche non pubblicate, senza motivazione, per favorire trasparenza e controllo diffuso. Queste forme ampliano il coinvolgimento dei cittadini nei confronti della PA.",
+        "Collegamenti: trasparenza amministrativa; FOIA; diritto di accesso documentale." 
+      ]
+    },
+    {
+      "question": "Disciplina dei contratti pubblici (D.Lgs. 36/2023)",
+      "answers": [
+        "Sintesi: Il Codice dei contratti pubblici (D.Lgs. 36/2023) regola gli appalti pubblici e le procedure di acquisizione di lavori, forniture e servizi.",
+        "Approfondimento: Il codice stabilisce i principi e le regole per le procedure di affidamento di contratti pubblici, ispirato alle direttive europee. Punta a garantire trasparenza, concorrenza, imparzialità e digitalizzazione dell’intero ciclo di vita dei contratti. Sono previste norme sui requisiti degli operatori economici, modalità di aggiudicazione e tracciabilità, nonché strumenti digitali per favorire l’evidenza pubblica e l’efficienza. L’obiettivo è combinare efficacia delle procedure con prevenzione di fenomeni corruttivi e maggiore trasparenza.",
+        "Collegamenti: trasparenza appalti; digitalizzazione della PA; principi di concorrenza ed evidenza pubblica." 
+      ]
+    },
+    {
+      "question": "Nozioni generali in materia di diritto costituzionale ed amministrativo",
+      "answers": [
+        "Sintesi: Il diritto costituzionale e amministrativo sono le branche che regolano l’organizzazione dello Stato e l’azione della pubblica amministrazione.",
+        "Approfondimento: Il diritto costituzionale stabilisce i principi fondamentali dello Stato, i diritti e doveri dei cittadini e l’organizzazione degli organi costituzionali. Il diritto amministrativo disciplina l’organizzazione e l’attività della pubblica amministrazione, i rapporti con i cittadini, il procedimento e i controlli sugli atti amministrativi. È un insieme di norme che garantisce l’equilibrio tra potere pubblico e tutela dei diritti, e si fonda sui principi di legalità, imparzialità, buon andamento, proporzionalità e tutela giurisdizionale.",
+        "Collegamenti: Costituzione italiana; principi fondamentali dell’azione amministrativa." 
+      ]
     }
   ]
 }
