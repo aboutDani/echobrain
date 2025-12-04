@@ -134,6 +134,9 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "📜 *Comandi disponibili:*\n"
         "/help - Mostra questo messaggio 📖\n"
         "/questions - Elenca solo le domande disponibili ❓\n"
+        "/questions <parola> - Filtra le domande che contengono quella parola 🔍\n"
+        "   • Esempi: `/questions tuel`, `/questions trasparenza`\n"
+        "   • Funziona solo con parole che *appaiono nelle domande già presenti*.\n"
         "/quiz - Avvia un quiz con domande casuali 🧠\n"
         "/stopquiz - Termina la modalità quiz 🛑\n"
         "/backup <password> - Fai il backup del json 🔐\n"
@@ -499,6 +502,7 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
