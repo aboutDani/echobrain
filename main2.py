@@ -138,7 +138,6 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "/stopquiz - Termina la modalità quiz 🛑\n"
         "/backup <password> - Fai il backup del json 🔐\n"
         "/delete <numero> - Elimina una domanda dal database 🗑️\n"
-        "/aggiungi [numero] - Aggiungi testo all'approfondimento di una domanda esistente ✏️\n"
         "👉 Scrivi una domanda ..."
     )
     await update.message.reply_text(help_text, parse_mode="Markdown")
@@ -302,82 +301,6 @@ async def delete_command(update: Update, context: CallbackContext) -> None:
         parse_mode="Markdown"
     )
 
-async def aggiungi_command(update: Update, context: CallbackContext) -> None:
-    """
-    Permette di AGGIUNGERE testo all'Approfondimento di una domanda esistente.
-
-    Modalità:
-    - /aggiungi              -> usa l'ultima domanda a cui il bot ha risposto
-    - /aggiungi 42           -> usa la domanda n.42 (come vista in /questions)
-    """
-    target_question = None
-
-    # 1) Se è stato passato un numero: /aggiungi 42
-    if context.args:
-        first = context.args[0]
-        if first.isdigit():
-            index = int(first) - 1  # 1-based -> 0-based
-            if 0 <= index < len(knowledge_base["questions"]):
-                q_obj = knowledge_base["questions"][index]
-                target_question = q_obj.get("question", "").strip()
-            else:
-                await update.message.reply_text(
-                    "❌ Numero non valido. Controlla la lista con /questions."
-                )
-                return
-        else:
-            await update.message.reply_text(
-                "❌ Se passi un parametro deve essere il numero della domanda (es. /aggiungi 3)."
-            )
-            return
-    else:
-        # 2) Nessun argomento: uso l'ultima domanda a cui ho risposto
-        target_question = context.user_data.get("last_question")
-        if not target_question:
-            await update.message.reply_text(
-                "ℹ️ Non so a quale domanda riferirti.\n"
-                "Puoi usare:\n"
-                "- Chiedi prima qualcosa (es. 'TUEL') e poi fai /aggiungi\n"
-                "- Oppure /questions, trova il numero, poi /aggiungi <numero>"
-            )
-            return
-
-    # cerco la domanda nel database
-    target_obj = None
-    for q in knowledge_base["questions"]:
-        if q.get("question", "").strip().lower() == target_question.lower():
-            target_obj = q
-            break
-
-    if not target_obj:
-        await update.message.reply_text("❌ Non ho trovato quella domanda nel database.")
-        return
-
-    # recupero l'approfondimento attuale (se esiste)
-    current_approfondimento = None
-    for a in target_obj.get("answers", []):
-        if a.lower().startswith("approfondimento:"):
-            current_approfondimento = a
-            break
-
-    if current_approfondimento:
-        preview = current_approfondimento
-    else:
-        preview = "(nessun Approfondimento presente, ne verrà creato uno nuovo)"
-
-    # salvo in stato che siamo in modalità 'append approfondimento'
-    context.user_data["editing_approfondimento_for"] = target_question
-
-    await update.message.reply_text(
-        f"✏️ *Stai aggiungendo testo all'Approfondimento di:*\n"
-        f"`{target_question}`\n\n"
-        f"🔎 Approfondimento attuale:\n{preview}\n\n"
-        "👉 Invia ORA il testo da *aggiungere in coda*.\n"
-        "Scrivi `annulla` per cancellare.",
-        parse_mode="Markdown"
-    )
-
-
 async def handle_message(update: Update, context: CallbackContext) -> None:
     """Risponde ai messaggi e apprende nuove risposte se necessario."""
     if not update.message or not update.message.text:
@@ -478,68 +401,6 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             parse_mode="Markdown"
         )
         return
-
-    # --- MODALITÀ APPRENDIMENTO ---
-    if "editing_approfondimento_for" in context.user_data:
-        target_question = context.user_data["editing_approfondimento_for"]
-
-        # annulla
-        if user_input in ("annulla", "cancel", "stop", "q"):
-            del context.user_data["editing_approfondimento_for"]
-            await update.message.reply_text("❌ Aggiunta all'approfondimento annullata.")
-            return
-
-        # testo da aggiungere
-        extra_text = user_input_raw.strip()
-        if not extra_text:
-            await update.message.reply_text(
-                "⚠️ Il testo è vuoto. Invia qualcosa o scrivi 'annulla' per uscire."
-            )
-            return
-
-        # Cerca la domanda nel database
-        q_obj = None
-        for q in knowledge_base["questions"]:
-            if q.get("question", "").strip().lower() == target_question.lower():
-                q_obj = q
-                break
-
-        if not q_obj:
-            del context.user_data["editing_approfondimento_for"]
-            await update.message.reply_text("❌ Non trovo più la domanda nel database.")
-            return
-
-        answers = q_obj.get("answers", [])
-
-        # Trova l'indice dell'approfondimento, se esiste
-        idx_approf = None
-        for i, a in enumerate(answers):
-            if a.lower().startswith("approfondimento:"):
-                idx_approf = i
-                break
-
-        if idx_approf is not None:
-            # Appendiamo il nuovo testo in coda
-            old_text = answers[idx_approf]
-            # aggiungo con uno spazio o newline, come preferisci
-            new_text = old_text + " " + extra_text
-            answers[idx_approf] = new_text
-        else:
-            # Non esisteva Approfondimento → ne creiamo uno
-            answers.append(f"Approfondimento: {extra_text}")
-            q_obj["answers"] = answers
-
-        # Salviamo il db
-        save_knowledge_base(knowledge_base)
-
-        del context.user_data["editing_approfondimento_for"]
-
-        await update.message.reply_text(
-            f"✅ Ho aggiunto il testo all'Approfondimento della domanda:\n*{target_question}*",
-            parse_mode="Markdown"
-        )
-        return
-
     
     # --- MODALITÀ APPRENDIMENTO ---
     if "waiting_for_answer" in context.user_data:
@@ -613,14 +474,13 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("delete", delete_command))
     app.add_handler(CommandHandler("quiz", quiz_command))
     app.add_handler(CommandHandler("stopquiz", stopquiz_command))
-    app.add_handler(CommandHandler("aggiungi", aggiungi_command))
-
 
     # Messaggi normali
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
