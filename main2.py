@@ -172,20 +172,51 @@ async def backup(update: Update, context: CallbackContext) -> None:
 
 async def approfondisci_command(update: Update, context: CallbackContext) -> None:
     """
-    Recupera informazioni aggiuntive dal web (es. Wikipedia in italiano)
+    Recupera informazioni aggiuntive dal web (Wikipedia in italiano)
     sull'argomento richiesto o sull'ultima domanda riconosciuta.
+
+    Modalità:
+    - /approfondisci 42    -> usa la domanda n.42 del JSON
+    - /approfondisci tuel  -> usa la stringa 'tuel'
+    - /approfondisci       -> usa l'ultimo topic (last_topic)
     """
-    # 1) Prima scelta: argomento passato nel comando
+    query = None
+
+    # 1) Se è stato passato qualcosa dopo il comando
     if context.args:
-        query = " ".join(context.args).strip()
+        first = context.args[0]
+
+        # Caso: /approfondisci 42  -> prendo la domanda n.42
+        if first.isdigit():
+            index = int(first) - 1  # 1-based → 0-based
+            if 0 <= index < len(knowledge_base["questions"]):
+                q_obj = knowledge_base["questions"][index]
+                base_query = q_obj.get("question", "").strip()
+                if not base_query:
+                    await update.message.reply_text(
+                        "❌ Non trovo il testo della domanda per questo numero."
+                    )
+                    return
+                query = base_query
+            else:
+                await update.message.reply_text(
+                    "❌ Numero non valido. Controlla la lista con /questions."
+                )
+                return
+        else:
+            # Caso: /approfondisci tuel anticorruzione
+            query = " ".join(context.args).strip()
     else:
-        # 2) Se nessun argomento, prova a usare l'ultimo topic usato dal bot
+        # 2) Nessun argomento passato → provo a usare l'ultimo best_match
         last_topic = context.user_data.get("last_topic")
         if not last_topic:
             await update.message.reply_text(
-                "ℹ️ Usa: /approfondisci <argomento>\n"
-                "Es: /approfondisci tuel\n\n"
-                "Oppure prima fai una domanda, poi /approfondisci senza nulla."
+                "ℹ️ Usa: /approfondisci <argomento> oppure /approfondisci <numero_domanda>.\n"
+                "Esempi:\n"
+                "`/approfondisci tuel`\n"
+                "`/approfondisci 42`\n\n"
+                "Oppure fai prima una domanda, poi usa semplicemente `/approfondisci`.",
+                parse_mode="Markdown"
             )
             return
         query = last_topic
@@ -195,20 +226,53 @@ async def approfondisci_command(update: Update, context: CallbackContext) -> Non
         parse_mode="Markdown"
     )
 
-    # Chiamata a Wikipedia in italiano (summary REST API)
+    # --- 1) CERCA SU WIKIPEDIA (API di ricerca) ---
     try:
-        base_url = "https://it.wikipedia.org/api/rest_v1/page/summary/"
-        url = base_url + quote(query)
-        resp = requests.get(url, timeout=5)
+        search_url = "https://it.wikipedia.org/w/api.php"
+        search_params = {
+            "action": "query",
+            "list": "search",
+            "srsearch": query,
+            "format": "json",
+            "srlimit": 1,
+        }
+        search_resp = requests.get(search_url, params=search_params, timeout=5)
 
-        if resp.status_code != 200:
+        if search_resp.status_code != 200:
             await update.message.reply_text(
-                "❌ Non ho trovato un approfondimento utile su Wikipedia per questo argomento."
+                "❌ Non sono riuscito a cercare l'argomento su Wikipedia."
             )
             return
 
-        data = resp.json()
-        title = data.get("title", query)
+        search_data = search_resp.json()
+        search_results = search_data.get("query", {}).get("search", [])
+
+        if not search_results:
+            await update.message.reply_text(
+                "❌ Non ho trovato risultati su Wikipedia per questo argomento."
+            )
+            return
+
+        # prendiamo il titolo della prima pagina trovata
+        page_title = search_results[0].get("title")
+        if not page_title:
+            await update.message.reply_text(
+                "❌ Non ho trovato un titolo valido su Wikipedia per questo argomento."
+            )
+            return
+
+        # --- 2) CHIEDI IL RIASSUNTO DELLA PAGINA TROVATA ---
+        summary_url = "https://it.wikipedia.org/api/rest_v1/page/summary/" + quote(page_title)
+        summary_resp = requests.get(summary_url, timeout=5)
+
+        if summary_resp.status_code != 200:
+            await update.message.reply_text(
+                "❌ Ho trovato una pagina ma non sono riuscito a leggerne il contenuto riassuntivo."
+            )
+            return
+
+        data = summary_resp.json()
+        title = data.get("title", page_title)
         extract = data.get("extract") or ""
 
         if not extract:
@@ -225,10 +289,11 @@ async def approfondisci_command(update: Update, context: CallbackContext) -> Non
         text = f"🌐 *Approfondimento web su: {title}*\n\n{extract}"
         await update.message.reply_text(text, parse_mode="Markdown")
 
-    except Exception as e:
+    except Exception:
         await update.message.reply_text(
             "⚠️ Si è verificato un errore cercando online l'approfondimento."
         )
+
 
 async def quiz_command(update: Update, context: CallbackContext) -> None:
     """Avvia un quiz: il bot fa domande dal JSON e tu rispondi."""
@@ -513,6 +578,7 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
