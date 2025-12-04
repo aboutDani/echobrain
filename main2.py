@@ -3,6 +3,9 @@ import os
 import random
 from difflib import get_close_matches
 
+import requests
+from urllib.parse import quote
+
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
 
@@ -136,6 +139,7 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "/questions - Elenca solo le domande disponibili ❓\n"
         "/quiz - Avvia un quiz con domande casuali 🧠\n"
         "/stopquiz - Termina la modalità quiz 🛑\n"
+        "/approfondisci [argomento] - Cerca info aggiuntive sul web 🌐\n"
         "/backup <password> - Fai il backup del json 🔐\n"
         "/delete <numero> - Elimina una domanda dal database 🗑️\n"
         "👉 Scrivi una domanda ..."
@@ -165,6 +169,66 @@ async def backup(update: Update, context: CallbackContext) -> None:
         filename="db.json",
         caption="📦 Backup del database attuale"
     )
+
+async def approfondisci_command(update: Update, context: CallbackContext) -> None:
+    """
+    Recupera informazioni aggiuntive dal web (es. Wikipedia in italiano)
+    sull'argomento richiesto o sull'ultima domanda riconosciuta.
+    """
+    # 1) Prima scelta: argomento passato nel comando
+    if context.args:
+        query = " ".join(context.args).strip()
+    else:
+        # 2) Se nessun argomento, prova a usare l'ultimo topic usato dal bot
+        last_topic = context.user_data.get("last_topic")
+        if not last_topic:
+            await update.message.reply_text(
+                "ℹ️ Usa: /approfondisci <argomento>\n"
+                "Es: /approfondisci tuel\n\n"
+                "Oppure prima fai una domanda, poi /approfondisci senza nulla."
+            )
+            return
+        query = last_topic
+
+    await update.message.reply_text(
+        f"🌐 Cerco un approfondimento online su: *{query}* ...",
+        parse_mode="Markdown"
+    )
+
+    # Chiamata a Wikipedia in italiano (summary REST API)
+    try:
+        base_url = "https://it.wikipedia.org/api/rest_v1/page/summary/"
+        url = base_url + quote(query)
+        resp = requests.get(url, timeout=5)
+
+        if resp.status_code != 200:
+            await update.message.reply_text(
+                "❌ Non ho trovato un approfondimento utile su Wikipedia per questo argomento."
+            )
+            return
+
+        data = resp.json()
+        title = data.get("title", query)
+        extract = data.get("extract") or ""
+
+        if not extract:
+            await update.message.reply_text(
+                "❌ La pagina trovata non contiene un testo riassuntivo utile."
+            )
+            return
+
+        # Limitiamo un po' la lunghezza per non esplodere la chat
+        max_len = 1800
+        if len(extract) > max_len:
+            extract = extract[:max_len].rsplit(" ", 1)[0] + "…"
+
+        text = f"🌐 *Approfondimento web su: {title}*\n\n{extract}"
+        await update.message.reply_text(text, parse_mode="Markdown")
+
+    except Exception as e:
+        await update.message.reply_text(
+            "⚠️ Si è verificato un errore cercando online l'approfondimento."
+        )
 
 async def quiz_command(update: Update, context: CallbackContext) -> None:
     """Avvia un quiz: il bot fa domande dal JSON e tu rispondi."""
@@ -409,6 +473,10 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         answers = get_answer_for_question(best_match, knowledge_base)
         if answers:
             response = format_answer_from_list(answers)
+
+            # 🔹 salvo l'ultimo argomento trovato, per /approfondisci
+            context.user_data["last_topic"] = best_match
+
             await update.message.reply_text(f"🤖 {response}", parse_mode="Markdown")
             return
 
@@ -438,12 +506,14 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("delete", delete_command))
     app.add_handler(CommandHandler("quiz", quiz_command))
     app.add_handler(CommandHandler("stopquiz", stopquiz_command))
+    app.add_handler(CommandHandler("approfondisci", approfondisci_command))
 
     # Messaggi normali
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
