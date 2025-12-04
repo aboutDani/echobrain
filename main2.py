@@ -202,42 +202,62 @@ async def stopquiz_command(update: Update, context: CallbackContext) -> None:
 async def questions_command(update: Update, context: CallbackContext) -> None:
     """
     Elenca le domande disponibili.
-    - /questions               → tutte le domande
-    - /questions tuel         → domande filtrate
-    - /questions enti locali  → filtro multiplo
+    - /questions                   → tutte le domande
+    - /questions tuel             → domande filtrate per 'tuel'
+    - /questions enti locali      → filtro su più parole
     """
 
-    query_terms = [t.lower() for t in context.args] if context.args else []
+    def normalize(s: str) -> str:
+        # minuscolo + togliamo punteggiatura "strana"
+        out = []
+        for ch in s.lower():
+            if ch.isalnum() or ch.isspace():
+                out.append(ch)
+            else:
+                # trasformiamo simboli in spazio (es. ?, -, , ecc.)
+                out.append(" ")
+        # togliamo spazi doppi
+        return " ".join("".join(out).split())
+
+    # termini cercati (normalizzati)
+    query_terms = [normalize(t) for t in context.args] if context.args else []
 
     if not knowledge_base["questions"]:
         await update.message.reply_text("🤖 Non ci sono domande salvate nel database.")
         return
 
-    # 🔍 FILTRAGGIO
+    # 🔍 MODALITÀ FILTRATA
     if query_terms:
         filtered = []
         for i, q in enumerate(knowledge_base["questions"], 1):
-            q_text = q["question"].lower()
-            if all(term in q_text for term in query_terms):
-                filtered.append((i, q["question"]))
+            q_text = q["question"]
+            q_norm = normalize(q_text)
+
+            # tutti i termini devono comparire nella domanda normalizzata
+            if all(term in q_norm for term in query_terms if term):
+                filtered.append((i, q_text))
 
         if not filtered:
             await update.message.reply_text(
-                f"❌ Nessuna domanda trovata per: *{' '.join(query_terms)}*",
+                f"❌ Nessuna domanda trovata per: *{' '.join(context.args)}*",
                 parse_mode="Markdown"
             )
             return
 
-        header = f"📌 *Domande trovate per:* `{ ' '.join(query_terms) }`\n\n"
+        header = f"📌 *Domande trovate per:* `{' '.join(context.args)}`\n\n"
         listing = "\n".join(f"{num}. {text}" for num, text in filtered)
 
         await update.message.reply_text(header + listing, parse_mode="Markdown")
 
         # attiva modalità scelta per numero
         context.user_data["questions_mode"] = True
+        await update.message.reply_text(
+            "ℹ️ Ora puoi inviarmi il *numero* di una domanda filtrata per vedere la risposta.",
+            parse_mode="Markdown"
+        )
         return
 
-    # 🔵 modalità normale → tutte le domande
+    # 🔵 MODALITÀ NORMALE → tutte le domande
     header = "📌 *Domande che puoi farmi:*\n\n"
     lines = []
     for i, q in enumerate(knowledge_base["questions"], 1):
@@ -260,7 +280,6 @@ async def questions_command(update: Update, context: CallbackContext) -> None:
         "ℹ️ Ora puoi inviarmi il *numero* di una domanda per vedere la risposta.",
         parse_mode="Markdown"
     )
-
 
 async def delete_command(update: Update, context: CallbackContext) -> None:
     """Elimina una domanda (e le sue risposte) in base al numero mostrato da /questions."""
@@ -480,6 +499,7 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
