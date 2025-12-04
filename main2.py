@@ -4,7 +4,6 @@ import random
 from difflib import get_close_matches
 
 import requests
-from urllib.parse import quote
 
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
@@ -172,13 +171,12 @@ async def backup(update: Update, context: CallbackContext) -> None:
 
 async def approfondisci_command(update: Update, context: CallbackContext) -> None:
     """
-    Recupera informazioni aggiuntive dal web (Wikipedia in italiano)
-    sull'argomento richiesto o sull'ultima domanda riconosciuta.
+    Recupera informazioni aggiuntive dal web usando DuckDuckGo (Instant Answer API).
 
     Modalità:
     - /approfondisci 42    -> usa la domanda n.42 del JSON
     - /approfondisci tuel  -> usa la stringa 'tuel'
-    - /approfondisci       -> usa l'ultimo topic (last_topic)
+    - /approfondisci       -> usa l'ultima domanda riconosciuta (last_topic)
     """
     query = None
 
@@ -226,74 +224,69 @@ async def approfondisci_command(update: Update, context: CallbackContext) -> Non
         parse_mode="Markdown"
     )
 
-    # --- 1) CERCA SU WIKIPEDIA (API di ricerca) ---
+    # --- Chiamata a DuckDuckGo Instant Answer API ---
     try:
-        search_url = "https://it.wikipedia.org/w/api.php"
-        search_params = {
-            "action": "query",
-            "list": "search",
-            "srsearch": query,
+        api_url = "https://api.duckduckgo.com/"
+        params = {
+            "q": query,
             "format": "json",
-            "srlimit": 1,
+            "no_html": 1,
+            "no_redirect": 1
         }
-        search_resp = requests.get(search_url, params=search_params, timeout=5)
+        resp = requests.get(api_url, params=params, timeout=5)
 
-        if search_resp.status_code != 200:
+        if resp.status_code != 200:
             await update.message.reply_text(
-                "❌ Non sono riuscito a cercare l'argomento su Wikipedia."
+                "❌ Non sono riuscito a cercare l'argomento su DuckDuckGo."
             )
             return
 
-        search_data = search_resp.json()
-        search_results = search_data.get("query", {}).get("search", [])
+        data = resp.json()
 
-        if not search_results:
+        # 1) Proviamo a usare l'Abstract principale
+        abstract = data.get("AbstractText") or data.get("Abstract") or ""
+        heading = data.get("Heading") or query
+
+        # 2) Se l'Abstract è vuoto, proviamo con il primo RelatedTopic
+        if not abstract:
+            related = data.get("RelatedTopics", [])
+            # RelatedTopics può essere una lista di dict, alcuni con campo 'Text'
+            found_text = None
+            for item in related:
+                if isinstance(item, dict):
+                    if "Text" in item:
+                        found_text = item["Text"]
+                        break
+                    # a volte c'è un campo 'Topics' annidato
+                    if "Topics" in item and isinstance(item["Topics"], list):
+                        for sub in item["Topics"]:
+                            if isinstance(sub, dict) and "Text" in sub:
+                                found_text = sub["Text"]
+                                break
+                if found_text:
+                    break
+
+            if found_text:
+                abstract = found_text
+
+        if not abstract:
             await update.message.reply_text(
-                "❌ Non ho trovato risultati su Wikipedia per questo argomento."
+                "❌ Non ho trovato un approfondimento utile per questo argomento."
             )
             return
 
-        # prendiamo il titolo della prima pagina trovata
-        page_title = search_results[0].get("title")
-        if not page_title:
-            await update.message.reply_text(
-                "❌ Non ho trovato un titolo valido su Wikipedia per questo argomento."
-            )
-            return
-
-        # --- 2) CHIEDI IL RIASSUNTO DELLA PAGINA TROVATA ---
-        summary_url = "https://it.wikipedia.org/api/rest_v1/page/summary/" + quote(page_title)
-        summary_resp = requests.get(summary_url, timeout=5)
-
-        if summary_resp.status_code != 200:
-            await update.message.reply_text(
-                "❌ Ho trovato una pagina ma non sono riuscito a leggerne il contenuto riassuntivo."
-            )
-            return
-
-        data = summary_resp.json()
-        title = data.get("title", page_title)
-        extract = data.get("extract") or ""
-
-        if not extract:
-            await update.message.reply_text(
-                "❌ La pagina trovata non contiene un testo riassuntivo utile."
-            )
-            return
-
-        # Limitiamo un po' la lunghezza per non esplodere la chat
+        # Limitiamo la lunghezza
         max_len = 1800
-        if len(extract) > max_len:
-            extract = extract[:max_len].rsplit(" ", 1)[0] + "…"
+        if len(abstract) > max_len:
+            abstract = abstract[:max_len].rsplit(" ", 1)[0] + "…"
 
-        text = f"🌐 *Approfondimento web su: {title}*\n\n{extract}"
+        text = f"🌐 *Approfondimento web (DuckDuckGo) su: {heading}*\n\n{abstract}"
         await update.message.reply_text(text, parse_mode="Markdown")
 
     except Exception:
         await update.message.reply_text(
             "⚠️ Si è verificato un errore cercando online l'approfondimento."
         )
-
 
 async def quiz_command(update: Update, context: CallbackContext) -> None:
     """Avvia un quiz: il bot fa domande dal JSON e tu rispondi."""
@@ -578,6 +571,7 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
