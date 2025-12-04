@@ -89,7 +89,7 @@ def get_answer_for_question(question: str, knowledge_base: dict) -> list:
 
 async def start(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text(
-        "👋 Ciao! Scrivi una domanda e proverò a rispondere! Digita /help per vedere i comandi."
+        "👋 Ciao! Scrivi una domanda! Digita /help per vedere i comandi."
     )
 
 
@@ -97,52 +97,12 @@ async def help_command(update: Update, context: CallbackContext) -> None:
     help_text = (
         "📜 *Comandi disponibili:*\n"
         "/help - Mostra questo messaggio 📖\n"
-        "/list - Mostra tutte le domande e risposte 📋\n"
         "/questions - Elenca solo le domande disponibili ❓\n"
         "/backup <password> - Fai il backup del json 🔐\n"
-        "👉 Scrivi una domanda e io proverò a rispondere!"
+        "/delete <numero> - Elimina una domanda dal database 🗑️\n"
+        "👉 Scrivi una domanda ..."
     )
     await update.message.reply_text(help_text, parse_mode="Markdown")
-
-
-async def list_questions(update: Update, context: CallbackContext) -> None:
-    if not knowledge_base["questions"]:
-        await update.message.reply_text("🤖 Non ci sono domande salvate nel database.")
-        return
-
-    message = "📋 *Lista delle domande e risposte:*\n\n"
-    for i, q in enumerate(knowledge_base["questions"], 1):
-        answers = "\n   - ".join(q["answers"]) if q["answers"] else "Nessuna risposta"
-        message += f"{i}. *{q['question']}*\n   - {answers}\n\n"
-
-    await update.message.reply_text(message, parse_mode="Markdown")
-
-async def questions_command(update: Update, context: CallbackContext) -> None:
-    """Elenca solo le domande disponibili nel database, senza le risposte."""
-    if not knowledge_base["questions"]:
-        await update.message.reply_text("🤖 Non ci sono domande salvate nel database.")
-        return
-
-    header = "📌 *Domande che puoi farmi:*\n\n"
-    lines = []
-    for i, q in enumerate(knowledge_base["questions"], 1):
-        lines.append(f"{i}. {q['question']}")
-
-    # Telegram ha un limite di ~4096 caratteri per messaggio,
-    # quindi spezziamo in più messaggi se necessario.
-    MAX_LEN = 3800  # margine di sicurezza
-    current_block = header
-
-    for line in lines:
-        # +2 per il "\n\n"
-        if len(current_block) + len(line) + 2 > MAX_LEN:
-            await update.message.reply_text(current_block, parse_mode="Markdown")
-            current_block = ""  # reset senza header per i blocchi successivi
-        current_block += line + "\n"
-
-    if current_block.strip():
-        await update.message.reply_text(current_block, parse_mode="Markdown")
-
 
 async def backup(update: Update, context: CallbackContext) -> None:
     """Invia il file db.json reale usato dal bot, protetto da password."""
@@ -166,6 +126,45 @@ async def backup(update: Update, context: CallbackContext) -> None:
         document=open(DB_FILE, "rb"),
         filename="db.json",
         caption="📦 Backup del database attuale"
+    )
+
+async def delete_command(update: Update, context: CallbackContext) -> None:
+    """Elimina una domanda (e le sue risposte) in base al numero mostrato da /questions."""
+    if not knowledge_base["questions"]:
+        await update.message.reply_text("🤖 Il database è vuoto, non c'è nulla da eliminare.")
+        return
+
+    # Controllo argomento: /delete <numero>
+    if not context.args:
+        await update.message.reply_text("❌ Usa: /delete <numero_domanda>\nEsempio: /delete 3")
+        return
+
+    raw_index = context.args[0]
+
+    try:
+        index = int(raw_index)
+    except ValueError:
+        await update.message.reply_text("❌ Il parametro deve essere un numero intero. Esempio: /delete 3")
+        return
+
+    # /questions numerava da 1, quindi convertiamo in indice di lista (0-based)
+    index -= 1
+
+    if index < 0 or index >= len(knowledge_base["questions"]):
+        await update.message.reply_text("❌ Numero non valido. Controlla la lista con /questions.")
+        return
+
+    # Prendiamo la domanda che stiamo per eliminare
+    removed_question = knowledge_base["questions"].pop(index)
+
+    # Salviamo il JSON aggiornato
+    save_knowledge_base(knowledge_base)
+
+    q_text = removed_question.get("question", "Domanda sconosciuta")
+
+    await update.message.reply_text(
+        f"🗑️ Ho eliminato la domanda n.{index + 1}:\n\n*{q_text}*",
+        parse_mode="Markdown"
     )
 
 async def handle_message(update: Update, context: CallbackContext) -> None:
@@ -268,15 +267,16 @@ if __name__ == "__main__":
     # Comandi
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
-    app.add_handler(CommandHandler("list", list_questions))
     app.add_handler(CommandHandler("questions", questions_command))
     app.add_handler(CommandHandler("backup", backup))
+    app.add_handler(CommandHandler("delete", delete_command))
 
     # Messaggi normali
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
