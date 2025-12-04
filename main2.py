@@ -200,17 +200,49 @@ async def stopquiz_command(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text("🤖 Non sei in modalità quiz al momento.")
 
 async def questions_command(update: Update, context: CallbackContext) -> None:
-    """Elenca solo le domande disponibili nel database, senza le risposte."""
+    """
+    Elenca le domande disponibili.
+    - /questions               → tutte le domande
+    - /questions tuel         → domande filtrate
+    - /questions enti locali  → filtro multiplo
+    """
+
+    query_terms = [t.lower() for t in context.args] if context.args else []
+
     if not knowledge_base["questions"]:
         await update.message.reply_text("🤖 Non ci sono domande salvate nel database.")
         return
 
+    # 🔍 FILTRAGGIO
+    if query_terms:
+        filtered = []
+        for i, q in enumerate(knowledge_base["questions"], 1):
+            q_text = q["question"].lower()
+            if all(term in q_text for term in query_terms):
+                filtered.append((i, q["question"]))
+
+        if not filtered:
+            await update.message.reply_text(
+                f"❌ Nessuna domanda trovata per: *{' '.join(query_terms)}*",
+                parse_mode="Markdown"
+            )
+            return
+
+        header = f"📌 *Domande trovate per:* `{ ' '.join(query_terms) }`\n\n"
+        listing = "\n".join(f"{num}. {text}" for num, text in filtered)
+
+        await update.message.reply_text(header + listing, parse_mode="Markdown")
+
+        # attiva modalità scelta per numero
+        context.user_data["questions_mode"] = True
+        return
+
+    # 🔵 modalità normale → tutte le domande
     header = "📌 *Domande che puoi farmi:*\n\n"
     lines = []
     for i, q in enumerate(knowledge_base["questions"], 1):
         lines.append(f"{i}. {q['question']}")
 
-    # Spezziamo in più messaggi se troppo lungo (telegram max 4096 chars)
     MAX_LEN = 3800
     current_block = header
 
@@ -223,13 +255,12 @@ async def questions_command(update: Update, context: CallbackContext) -> None:
     if current_block.strip():
         await update.message.reply_text(current_block, parse_mode="Markdown")
 
-    # 🔹 attiva la modalità "scegli per numero" per il prossimo messaggio
     context.user_data["questions_mode"] = True
     await update.message.reply_text(
-        "ℹ️ Adesso puoi inviarmi il *numero* di una domanda (es. `42`) per vedere la risposta.\n"
-        "Se scrivi qualcos'altro, torniamo alla modalità normale.",
+        "ℹ️ Ora puoi inviarmi il *numero* di una domanda per vedere la risposta.",
         parse_mode="Markdown"
     )
+
 
 async def delete_command(update: Update, context: CallbackContext) -> None:
     """Elimina una domanda (e le sue risposte) in base al numero mostrato da /questions."""
@@ -445,6 +476,7 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
