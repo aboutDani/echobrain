@@ -86,6 +86,42 @@ def get_answer_for_question(question: str, knowledge_base: dict) -> list:
             return q.get("answers", [])
     return []
 
+def format_answer_from_list(answers: list[str]) -> str:
+    """
+    Costruisce una risposta strutturata (Sintesi + Approfondimento),
+    ignorando 'Collegamenti:'.
+    """
+    sintesi = None
+    approfondimento = None
+    altri = []
+
+    for a in answers:
+        low = a.lower()
+        if low.startswith("sintesi:"):
+            sintesi = a
+        elif low.startswith("approfondimento:"):
+            approfondimento = a
+        elif low.startswith("collegamenti:"):
+            # ignoriamo i collegamenti qui
+            continue
+        else:
+            altri.append(a)
+
+    parts = []
+
+    if sintesi:
+        parts.append(f"📝 *Sintesi*\n{sintesi[len('Sintesi: '):]}")
+    if approfondimento:
+        parts.append(f"📚 *Approfondimento*\n{approfondimento[len('Approfondimento: '):]}")
+
+    for extra in altri:
+        parts.append(extra)
+
+    if not parts:
+        # fallback: tutto l'array unito se per caso non trova nulla di marcato
+        parts.append("\n".join(answers))
+
+    return "\n\n".join(parts)
 
 async def start(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text(
@@ -98,6 +134,8 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "📜 *Comandi disponibili:*\n"
         "/help - Mostra questo messaggio 📖\n"
         "/questions - Elenca solo le domande disponibili ❓\n"
+        "/quiz - Avvia un quiz con domande casuali 🧠\n"
+        "/stopquiz - Termina la modalità quiz 🛑\n"
         "/backup <password> - Fai il backup del json 🔐\n"
         "/delete <numero> - Elimina una domanda dal database 🗑️\n"
         "👉 Scrivi una domanda ..."
@@ -127,6 +165,39 @@ async def backup(update: Update, context: CallbackContext) -> None:
         filename="db.json",
         caption="📦 Backup del database attuale"
     )
+
+async def quiz_command(update: Update, context: CallbackContext) -> None:
+    """Avvia un quiz: il bot fa domande dal JSON e tu rispondi."""
+    if not knowledge_base["questions"]:
+        await update.message.reply_text("🤖 Il database è vuoto, non posso fare il quiz.")
+        return
+
+    # scegliamo una domanda a caso
+    index = random.randrange(len(knowledge_base["questions"]))
+    question_obj = knowledge_base["questions"][index]
+    question_text = question_obj.get("question", "Domanda senza testo")
+
+    # salviamo lo stato del quiz per l'utente
+    context.user_data["quiz_mode"] = True
+    context.user_data["quiz_index"] = index
+
+    await update.message.reply_text(
+        "🧠 *Quiz iniziato!*\n\n"
+        f"Domanda n.{index + 1}:\n*{question_text}*\n\n"
+        "✏️ Scrivi la tua risposta.\n"
+        "⏭️ Scrivi *skip* per cambiare domanda.\n"
+        "🛑 Digita /stopquiz per uscire dal quiz.",
+        parse_mode="Markdown"
+    )
+
+async def stopquiz_command(update: Update, context: CallbackContext) -> None:
+    """Termina la modalità quiz per l'utente."""
+    if context.user_data.get("quiz_mode"):
+        context.user_data.pop("quiz_mode", None)
+        context.user_data.pop("quiz_index", None)
+        await update.message.reply_text("🛑 Modalità quiz terminata. Torniamo alle domande normali.")
+    else:
+        await update.message.reply_text("🤖 Non sei in modalità quiz al momento.")
 
 async def questions_command(update: Update, context: CallbackContext) -> None:
     """Elenca solo le domande disponibili nel database, senza le risposte."""
@@ -199,6 +270,70 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     user_input_raw = update.message.text.strip()
     user_input = user_input_raw.lower()
 
+    # --- MODALITÀ QUIZ ---
+    if context.user_data.get("quiz_mode"):
+        # comandi rapidi dentro il quiz
+        if user_input in ("/stopquiz", "stop", "esci", "fine", "quit"):
+            context.user_data.pop("quiz_mode", None)
+            context.user_data.pop("quiz_index", None)
+            await update.message.reply_text("🛑 Modalità quiz terminata. Torniamo alle domande normali.")
+            return
+
+        # salto domanda
+        if user_input in ("skip", "s"):
+            if not knowledge_base["questions"]:
+                await update.message.reply_text("🤖 Database vuoto, non posso cambiare domanda.")
+                return
+
+            new_index = random.randrange(len(knowledge_base["questions"]))
+            context.user_data["quiz_index"] = new_index
+            question_obj = knowledge_base["questions"][new_index]
+            question_text = question_obj.get("question", "Domanda senza testo")
+
+            await update.message.reply_text(
+                f"⏭️ Nuova domanda n.{new_index + 1}:\n*{question_text}*",
+                parse_mode="Markdown",
+            )
+            return
+
+        # risposta normale del quiz
+        idx = context.user_data.get("quiz_index")
+        if idx is None or idx < 0 or idx >= len(knowledge_base["questions"]):
+            await update.message.reply_text("⚠️ Qualcosa è andato storto con il quiz. Riprova con /quiz.")
+            context.user_data.pop("quiz_mode", None)
+            context.user_data.pop("quiz_index", None)
+            return
+
+        question_obj = knowledge_base["questions"][idx]
+        question_text = question_obj.get("question", "Domanda senza testo")
+        answers = question_obj.get("answers", [])
+
+        # mostriamo la risposta dell'utente + la soluzione ufficiale
+        solution = format_answer_from_list(answers)
+
+        await update.message.reply_text(
+            f"✏️ *La tua risposta:*\n{user_input_raw}",
+            parse_mode="Markdown"
+        )
+
+        await update.message.reply_text(
+            f"✅ *Soluzione ufficiale per la domanda n.{idx + 1}:*\n*{question_text}*\n\n{solution}",
+            parse_mode="Markdown"
+        )
+
+        # subito una nuova domanda
+        new_index = random.randrange(len(knowledge_base["questions"]))
+        context.user_data["quiz_index"] = new_index
+        new_q = knowledge_base["questions"][new_index].get("question", "Domanda senza testo")
+
+        await update.message.reply_text(
+            f"🧠 Prossima domanda n.{new_index + 1}:\n*{new_q}*\n\n"
+            "✏️ Scrivi la tua risposta oppure *skip* per passare.\n"
+            "🛑 /stopquiz per uscire.",
+            parse_mode="Markdown"
+        )
+        return
+
     # --- MODALITÀ APPRENDIMENTO ---
     if "waiting_for_answer" in context.user_data:
         user_question = context.user_data["waiting_for_answer"]
@@ -236,39 +371,9 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     if best_match:
         answers = get_answer_for_question(best_match, knowledge_base)
         if answers:
-            # Costruiamo una risposta strutturata: Sintesi + Approfondimento
-            sintesi = None
-            approfondimento = None
-            altri = []
-    
-            for a in answers:
-                low = a.lower()
-                if low.startswith("sintesi:"):
-                    sintesi = a
-                elif low.startswith("approfondimento:"):
-                    approfondimento = a
-                elif low.startswith("collegamenti:"):
-                    # NON vogliamo stampare i collegamenti → li ignoriamo
-                    continue
-                else:
-                    altri.append(a)
-    
-            parts = []
-    
-            if sintesi:
-                parts.append(f"📝 *Sintesi*\n{sintesi[len('Sintesi: '):]}")
-            if approfondimento:
-                parts.append(f"📚 *Approfondimento*\n{approfondimento[len('Approfondimento: '):]}")
-            
-            # aggiungi eventuali risposte extra non classificate
-            for extra in altri:
-                parts.append(extra)
-    
-            response = "\n\n".join(parts)
-    
+            response = format_answer_from_list(answers)
             await update.message.reply_text(f"🤖 {response}", parse_mode="Markdown")
             return
-
 
     # Non trovata → chiedi risposta
     await update.message.reply_text(
@@ -294,12 +399,15 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("questions", questions_command))
     app.add_handler(CommandHandler("backup", backup))
     app.add_handler(CommandHandler("delete", delete_command))
+    app.add_handler(CommandHandler("quiz", quiz_command))
+    app.add_handler(CommandHandler("stopquiz", stopquiz_command))
 
     # Messaggi normali
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
