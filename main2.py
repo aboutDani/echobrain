@@ -128,6 +128,30 @@ async def backup(update: Update, context: CallbackContext) -> None:
         caption="📦 Backup del database attuale"
     )
 
+async def questions_command(update: Update, context: CallbackContext) -> None:
+    """Elenca solo le domande disponibili nel database, senza le risposte."""
+    if not knowledge_base["questions"]:
+        await update.message.reply_text("🤖 Non ci sono domande salvate nel database.")
+        return
+
+    header = "📌 *Domande che puoi farmi:*\n\n"
+    lines = []
+    for i, q in enumerate(knowledge_base["questions"], 1):
+        lines.append(f"{i}. {q['question']}")
+
+    # Spezziamo in più messaggi se troppo lungo (telegram max 4096 chars)
+    MAX_LEN = 3800
+    current_block = header
+
+    for line in lines:
+        if len(current_block) + len(line) + 2 > MAX_LEN:
+            await update.message.reply_text(current_block, parse_mode="Markdown")
+            current_block = ""
+        current_block += line + "\n"
+
+    if current_block.strip():
+        await update.message.reply_text(current_block, parse_mode="Markdown")
+
 async def delete_command(update: Update, context: CallbackContext) -> None:
     """Elimina una domanda (e le sue risposte) in base al numero mostrato da /questions."""
     if not knowledge_base["questions"]:
@@ -276,6 +300,7 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
