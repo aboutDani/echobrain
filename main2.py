@@ -98,6 +98,7 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "📜 *Comandi disponibili:*\n"
         "/help - Mostra questo messaggio 📖\n"
         "/list - Mostra tutte le domande e risposte 📋\n"
+        "/questions - Elenca solo le domande disponibili ❓\n"
         "/backup <password> - Fai il backup del json 🔐\n"
         "👉 Scrivi una domanda e io proverò a rispondere!"
     )
@@ -115,6 +116,33 @@ async def list_questions(update: Update, context: CallbackContext) -> None:
         message += f"{i}. *{q['question']}*\n   - {answers}\n\n"
 
     await update.message.reply_text(message, parse_mode="Markdown")
+
+async def questions_command(update: Update, context: CallbackContext) -> None:
+    """Elenca solo le domande disponibili nel database, senza le risposte."""
+    if not knowledge_base["questions"]:
+        await update.message.reply_text("🤖 Non ci sono domande salvate nel database.")
+        return
+
+    header = "📌 *Domande che puoi farmi:*\n\n"
+    lines = []
+    for i, q in enumerate(knowledge_base["questions"], 1):
+        lines.append(f"{i}. {q['question']}")
+
+    # Telegram ha un limite di ~4096 caratteri per messaggio,
+    # quindi spezziamo in più messaggi se necessario.
+    MAX_LEN = 3800  # margine di sicurezza
+    current_block = header
+
+    for line in lines:
+        # +2 per il "\n\n"
+        if len(current_block) + len(line) + 2 > MAX_LEN:
+            await update.message.reply_text(current_block, parse_mode="Markdown")
+            current_block = ""  # reset senza header per i blocchi successivi
+        current_block += line + "\n"
+
+    if current_block.strip():
+        await update.message.reply_text(current_block, parse_mode="Markdown")
+
 
 async def backup(update: Update, context: CallbackContext) -> None:
     """Invia il file db.json reale usato dal bot, protetto da password."""
@@ -185,9 +213,39 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     if best_match:
         answers = get_answer_for_question(best_match, knowledge_base)
         if answers:
-            response = random.choice(answers)
-            await update.message.reply_text(f"🤖 {response}")
+            # Costruiamo una risposta strutturata: Sintesi + Approfondimento
+            sintesi = None
+            approfondimento = None
+            altri = []
+    
+            for a in answers:
+                low = a.lower()
+                if low.startswith("sintesi:"):
+                    sintesi = a
+                elif low.startswith("approfondimento:"):
+                    approfondimento = a
+                elif low.startswith("collegamenti:"):
+                    # NON vogliamo stampare i collegamenti → li ignoriamo
+                    continue
+                else:
+                    altri.append(a)
+    
+            parts = []
+    
+            if sintesi:
+                parts.append(f"📝 *Sintesi*\n{sintesi[len('Sintesi: '):]}")
+            if approfondimento:
+                parts.append(f"📚 *Approfondimento*\n{approfondimento[len('Approfondimento: '):]}")
+            
+            # aggiungi eventuali risposte extra non classificate
+            for extra in altri:
+                parts.append(extra)
+    
+            response = "\n\n".join(parts)
+    
+            await update.message.reply_text(f"🤖 {response}", parse_mode="Markdown")
             return
+
 
     # Non trovata → chiedi risposta
     await update.message.reply_text(
@@ -211,6 +269,7 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("list", list_questions))
+    app.add_handler(CommandHandler("questions", questions_command))
     app.add_handler(CommandHandler("backup", backup))
 
     # Messaggi normali
@@ -218,6 +277,7 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
