@@ -102,7 +102,7 @@ def format_answer_from_list(answers: list[str]) -> str:
         elif low.startswith("approfondimento:"):
             approfondimento = a
         elif low.startswith("collegamenti:"):
-            # ignoriamo i collegamenti qui
+            # NON stampiamo i collegamenti
             continue
         else:
             altri.append(a)
@@ -117,8 +117,8 @@ def format_answer_from_list(answers: list[str]) -> str:
     for extra in altri:
         parts.append(extra)
 
+    # fallback se non trova niente di marcato
     if not parts:
-        # fallback: tutto l'array unito se per caso non trova nulla di marcato
         parts.append("\n".join(answers))
 
     return "\n\n".join(parts)
@@ -223,6 +223,14 @@ async def questions_command(update: Update, context: CallbackContext) -> None:
     if current_block.strip():
         await update.message.reply_text(current_block, parse_mode="Markdown")
 
+    # 🔹 attiva la modalità "scegli per numero" per il prossimo messaggio
+    context.user_data["questions_mode"] = True
+    await update.message.reply_text(
+        "ℹ️ Adesso puoi inviarmi il *numero* di una domanda (es. `42`) per vedere la risposta.\n"
+        "Se scrivi qualcos'altro, torniamo alla modalità normale.",
+        parse_mode="Markdown"
+    )
+
 async def delete_command(update: Update, context: CallbackContext) -> None:
     """Elimina una domanda (e le sue risposte) in base al numero mostrato da /questions."""
     if not knowledge_base["questions"]:
@@ -269,6 +277,35 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 
     user_input_raw = update.message.text.strip()
     user_input = user_input_raw.lower()
+
+    # --- MODALITÀ: SCELTA DOMANDA PER NUMERO DOPO /questions ---
+    if context.user_data.get("questions_mode"):
+        # se è solo un numero, interpretiamolo come indice della domanda
+        if user_input_raw.isdigit():
+            index = int(user_input_raw) - 1  # /questions è 1-based
+            if 0 <= index < len(knowledge_base["questions"]):
+                q_obj = knowledge_base["questions"][index]
+                q_text = q_obj.get("question", "Domanda senza testo")
+                answers = q_obj.get("answers", [])
+
+                formatted = format_answer_from_list(answers)
+
+                await update.message.reply_text(
+                    f"❓ *Domanda n.{index + 1}:* {q_text}\n\n{formatted}",
+                    parse_mode="Markdown"
+                )
+            else:
+                await update.message.reply_text(
+                    "❌ Numero non valido. Controlla la lista con /questions."
+                )
+
+            # in ogni caso consumiamo la modalità
+            context.user_data.pop("questions_mode", None)
+            return
+        else:
+            # non è un numero → esco dalla modalità e procedo normale
+            context.user_data.pop("questions_mode", None)
+            # e continuo con la logica sotto (apprendimento / domanda)
 
     # --- MODALITÀ QUIZ ---
     if context.user_data.get("quiz_mode"):
@@ -407,6 +444,7 @@ if __name__ == "__main__":
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
