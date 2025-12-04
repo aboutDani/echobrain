@@ -135,10 +135,10 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "/help - Mostra questo messaggio 📖\n"
         "/questions - Elenca solo le domande disponibili ❓\n"
         "/questions <parola> - Filtra le domande che contengono quella parola 🔍\n"
-        "   • Esempi: `/questions tuel`, `/questions trasparenza`\n"
-        "   • Funziona solo con parole che *appaiono nelle domande già presenti*.\n"
         "/quiz - Avvia un quiz con domande casuali 🧠\n"
         "/stopquiz - Termina la modalità quiz 🛑\n"
+        "/flash - Avvia la modalità flashcard veloce ⚡\n"
+        "/stopflash - Termina la modalità flashcard 🛑\n"
         "/backup <password> - Fai il backup del json 🔐\n"
         "/delete <numero> - Elimina una domanda dal database 🗑️\n"
         "👉 Scrivi una domanda ..."
@@ -201,6 +201,40 @@ async def stopquiz_command(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text("🛑 Modalità quiz terminata. Torniamo alle domande normali.")
     else:
         await update.message.reply_text("🤖 Non sei in modalità quiz al momento.")
+
+async def flash_command(update: Update, context: CallbackContext) -> None:
+    """
+    Avvia la modalità flashcard:
+    - il bot mostra una domanda
+    - ad ogni tuo messaggio ti mostra la risposta e passa alla successiva
+    """
+    if not knowledge_base["questions"]:
+        await update.message.reply_text("🤖 Il database è vuoto, non posso fare flashcard.")
+        return
+
+    index = random.randrange(len(knowledge_base["questions"]))
+    question_obj = knowledge_base["questions"][index]
+    question_text = question_obj.get("question", "Domanda senza testo")
+
+    context.user_data["flash_mode"] = True
+    context.user_data["flash_index"] = index
+
+    await update.message.reply_text(
+        "⚡ *Modalità flashcard attivata!*\n\n"
+        f"Prima domanda:\n❓ *{question_text}*\n\n"
+        "✏️ Scrivi *qualunque cosa* (es. `ok`) per vedere la risposta.\n"
+        "🛑 Digita /stopflash per uscire.",
+        parse_mode="Markdown"
+    )
+
+async def stopflash_command(update: Update, context: CallbackContext) -> None:
+    """Termina la modalità flashcard."""
+    if context.user_data.get("flash_mode"):
+        context.user_data.pop("flash_mode", None)
+        context.user_data.pop("flash_index", None)
+        await update.message.reply_text("🛑 Modalità flashcard terminata. Torniamo alle domande normali.")
+    else:
+        await update.message.reply_text("🤖 Non sei in modalità flashcard al momento.")
 
 async def questions_command(update: Update, context: CallbackContext) -> None:
     """
@@ -360,6 +394,52 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
             context.user_data.pop("questions_mode", None)
             # e continuo con la logica sotto (apprendimento / domanda)
 
+    # --- MODALITÀ FLASHCARD ---
+    if context.user_data.get("flash_mode"):
+        # comandi rapidi per uscire (testo, non comando)
+        if user_input in ("stop", "esci", "fine", "quit"):
+            context.user_data.pop("flash_mode", None)
+            context.user_data.pop("flash_index", None)
+            await update.message.reply_text("🛑 Modalità flashcard terminata. Torniamo alle domande normali.")
+            return
+
+        idx = context.user_data.get("flash_index")
+
+        # sicurezza: se qualcosa va storto, scegliamo una nuova domanda
+        if idx is None or idx < 0 or idx >= len(knowledge_base["questions"]):
+            if not knowledge_base["questions"]:
+                context.user_data.pop("flash_mode", None)
+                await update.message.reply_text("🤖 Database vuoto, impossibile continuare la modalità flash.")
+                return
+            idx = random.randrange(len(knowledge_base["questions"]))
+            context.user_data["flash_index"] = idx
+
+        question_obj = knowledge_base["questions"][idx]
+        question_text = question_obj.get("question", "Domanda senza testo")
+        answers = question_obj.get("answers", [])
+
+        solution = format_answer_from_list(answers)
+
+        # 1️⃣ Mostra la risposta della flashcard corrente
+        await update.message.reply_text(
+            f"✅ *Risposta flash:*\n*{question_text}*\n\n{solution}",
+            parse_mode="Markdown"
+        )
+
+        # 2️⃣ Subito nuova domanda flash
+        new_index = random.randrange(len(knowledge_base["questions"]))
+        context.user_data["flash_index"] = new_index
+        new_q = knowledge_base["questions"][new_index].get("question", "Domanda senza testo")
+
+        await update.message.reply_text(
+            f"⚡ Prossima flashcard:\n❓ *{new_q}*\n\n"
+            "✏️ Scrivi qualsiasi cosa per vedere la risposta.\n"
+            "🛑 /stopflash per uscire.",
+            parse_mode="Markdown"
+        )
+        return
+
+    
     # --- MODALITÀ QUIZ ---
     if context.user_data.get("quiz_mode"):
         # comandi rapidi dentro il quiz
@@ -496,12 +576,15 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("delete", delete_command))
     app.add_handler(CommandHandler("quiz", quiz_command))
     app.add_handler(CommandHandler("stopquiz", stopquiz_command))
+    app.add_handler(CommandHandler("flash", flash_command))
+    app.add_handler(CommandHandler("stopflash", stopflash_command))
 
     # Messaggi normali
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
