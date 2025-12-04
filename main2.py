@@ -3,8 +3,6 @@ import os
 import random
 from difflib import get_close_matches
 
-import requests
-
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackContext, filters
 
@@ -138,7 +136,6 @@ async def help_command(update: Update, context: CallbackContext) -> None:
         "/questions - Elenca solo le domande disponibili ❓\n"
         "/quiz - Avvia un quiz con domande casuali 🧠\n"
         "/stopquiz - Termina la modalità quiz 🛑\n"
-        "/approfondisci [argomento] - Cerca info aggiuntive sul web 🌐\n"
         "/backup <password> - Fai il backup del json 🔐\n"
         "/delete <numero> - Elimina una domanda dal database 🗑️\n"
         "👉 Scrivi una domanda ..."
@@ -168,125 +165,6 @@ async def backup(update: Update, context: CallbackContext) -> None:
         filename="db.json",
         caption="📦 Backup del database attuale"
     )
-
-async def approfondisci_command(update: Update, context: CallbackContext) -> None:
-    """
-    Recupera informazioni aggiuntive dal web usando DuckDuckGo (Instant Answer API).
-
-    Modalità:
-    - /approfondisci 42    -> usa la domanda n.42 del JSON
-    - /approfondisci tuel  -> usa la stringa 'tuel'
-    - /approfondisci       -> usa l'ultima domanda riconosciuta (last_topic)
-    """
-    query = None
-
-    # 1) Se è stato passato qualcosa dopo il comando
-    if context.args:
-        first = context.args[0]
-
-        # Caso: /approfondisci 42  -> prendo la domanda n.42
-        if first.isdigit():
-            index = int(first) - 1  # 1-based → 0-based
-            if 0 <= index < len(knowledge_base["questions"]):
-                q_obj = knowledge_base["questions"][index]
-                base_query = q_obj.get("question", "").strip()
-                if not base_query:
-                    await update.message.reply_text(
-                        "❌ Non trovo il testo della domanda per questo numero."
-                    )
-                    return
-                query = base_query
-            else:
-                await update.message.reply_text(
-                    "❌ Numero non valido. Controlla la lista con /questions."
-                )
-                return
-        else:
-            # Caso: /approfondisci tuel anticorruzione
-            query = " ".join(context.args).strip()
-    else:
-        # 2) Nessun argomento passato → provo a usare l'ultimo best_match
-        last_topic = context.user_data.get("last_topic")
-        if not last_topic:
-            await update.message.reply_text(
-                "ℹ️ Usa: /approfondisci <argomento> oppure /approfondisci <numero_domanda>.\n"
-                "Esempi:\n"
-                "`/approfondisci tuel`\n"
-                "`/approfondisci 42`\n\n"
-                "Oppure fai prima una domanda, poi usa semplicemente `/approfondisci`.",
-                parse_mode="Markdown"
-            )
-            return
-        query = last_topic
-
-    await update.message.reply_text(
-        f"🌐 Cerco un approfondimento online su: *{query}* ...",
-        parse_mode="Markdown"
-    )
-
-    # --- Chiamata a DuckDuckGo Instant Answer API ---
-    try:
-        api_url = "https://api.duckduckgo.com/"
-        params = {
-            "q": query,
-            "format": "json",
-            "no_html": 1,
-            "no_redirect": 1
-        }
-        resp = requests.get(api_url, params=params, timeout=5)
-
-        if resp.status_code != 200:
-            await update.message.reply_text(
-                "❌ Non sono riuscito a cercare l'argomento su DuckDuckGo."
-            )
-            return
-
-        data = resp.json()
-
-        # 1) Proviamo a usare l'Abstract principale
-        abstract = data.get("AbstractText") or data.get("Abstract") or ""
-        heading = data.get("Heading") or query
-
-        # 2) Se l'Abstract è vuoto, proviamo con il primo RelatedTopic
-        if not abstract:
-            related = data.get("RelatedTopics", [])
-            # RelatedTopics può essere una lista di dict, alcuni con campo 'Text'
-            found_text = None
-            for item in related:
-                if isinstance(item, dict):
-                    if "Text" in item:
-                        found_text = item["Text"]
-                        break
-                    # a volte c'è un campo 'Topics' annidato
-                    if "Topics" in item and isinstance(item["Topics"], list):
-                        for sub in item["Topics"]:
-                            if isinstance(sub, dict) and "Text" in sub:
-                                found_text = sub["Text"]
-                                break
-                if found_text:
-                    break
-
-            if found_text:
-                abstract = found_text
-
-        if not abstract:
-            await update.message.reply_text(
-                "❌ Non ho trovato un approfondimento utile per questo argomento."
-            )
-            return
-
-        # Limitiamo la lunghezza
-        max_len = 1800
-        if len(abstract) > max_len:
-            abstract = abstract[:max_len].rsplit(" ", 1)[0] + "…"
-
-        text = f"🌐 *Approfondimento web (DuckDuckGo) su: {heading}*\n\n{abstract}"
-        await update.message.reply_text(text, parse_mode="Markdown")
-
-    except Exception:
-        await update.message.reply_text(
-            "⚠️ Si è verificato un errore cercando online l'approfondimento."
-        )
 
 async def quiz_command(update: Update, context: CallbackContext) -> None:
     """Avvia un quiz: il bot fa domande dal JSON e tu rispondi."""
@@ -532,9 +410,6 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         if answers:
             response = format_answer_from_list(answers)
 
-            # 🔹 salvo l'ultimo argomento trovato, per /approfondisci
-            context.user_data["last_topic"] = best_match
-
             await update.message.reply_text(f"🤖 {response}", parse_mode="Markdown")
             return
 
@@ -564,13 +439,13 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("delete", delete_command))
     app.add_handler(CommandHandler("quiz", quiz_command))
     app.add_handler(CommandHandler("stopquiz", stopquiz_command))
-    app.add_handler(CommandHandler("approfondisci", approfondisci_command))
 
     # Messaggi normali
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("🤖 Bot avviato in polling...")
     app.run_polling()
+
 
 
 
